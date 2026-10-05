@@ -1,0 +1,10 @@
+{
+  "name": "tonearm-music-player",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/generate-song-manifest.mjs",
+    "dev": "node scripts/generate-song-manifest.mjs && node scripts/dev-server.mjs"
+  }
+}
