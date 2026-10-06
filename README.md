@@ -6,7 +6,7 @@ A responsive static music player for songs directed by Prajwal Khot using AI tec
 
 The project is ready to publish from its repository root. The Vercel configuration disables build and install commands and serves `.` as the output directory. Netlify and GitHub Pages can also publish the root directory as a static site.
 
-Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, `assets/playlists/`, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song and artwork URLs are relative to the site root; no local machine paths or runtime API are used.
+Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, `assets/playlists/`, `assets/artists/`, `Photos/TONEARM logo.png`, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song and artwork URLs are relative to the site root; no local machine paths or runtime API are used.
 
 ## Updating songs
 

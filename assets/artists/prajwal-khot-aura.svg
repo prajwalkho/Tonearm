@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512" shape-rendering="geometricPrecision">
+ <defs>
+  <radialGradient id="space" cx=".48" cy=".42" r=".75"><stop stop-color="#403070"/><stop offset=".58" stop-color="#211b42"/><stop offset="1" stop-color="#111622"/></radialGradient>
+  <radialGradient id="core" cx=".5" cy=".5" r=".5"><stop stop-color="#F7FFFF"/><stop offset=".13" stop-color="#B9FFF4"/><stop offset=".33" stop-color="#64E6E0" stop-opacity=".72"/><stop offset="1" stop-color="#6A63FF" stop-opacity="0"/></radialGradient>
+  <linearGradient id="ribbon" x1="72" y1="114" x2="442" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#69FFE5"/><stop offset=".48" stop-color="#9B8CFF"/><stop offset="1" stop-color="#FF8DCD"/></linearGradient>
+  <linearGradient id="letter" x1="190" y1="178" x2="333" y2="343" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset="1" stop-color="#B9F4FF"/></linearGradient>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="shine" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="grain" width="64" height="64" patternUnits="userSpaceOnUse"><circle cx="5" cy="9" r="1" fill="#FFF" opacity=".34"/><circle cx="44" cy="27" r="1" fill="#B7FCFF" opacity=".32"/><circle cx="25" cy="57" r=".8" fill="#FFF" opacity=".25"/></pattern>
+ </defs>
+ <rect width="512" height="512" rx="38" fill="url(#space)"/>
+ <circle cx="256" cy="256" r="184" fill="#51DED9" opacity=".18" filter="url(#soft)"/>
+ <circle cx="256" cy="256" r="157" stroke="url(#ribbon)" stroke-opacity=".36" stroke-width="1.5"/>
+ <circle cx="256" cy="256" r="139" stroke="#E8FFFF" stroke-opacity=".28" stroke-width="1" stroke-dasharray="1 9"/>
+ <path d="M69 270c40-103 123-164 205-145 61 14 88 67 152 42 18-7 31-18 44-34-29 74-90 116-153 102-53-12-88-66-142-53-45 10-78 45-106 88Z" fill="url(#ribbon)" opacity=".56" filter="url(#shine)"/>
+ <path d="M36 282c63-66 105-110 170-90 62 19 94 76 156 62 39-9 67-37 104-76-21 77-77 137-147 145-76 8-112-56-176-63-43-5-74 11-107 22Z" fill="none" stroke="url(#ribbon)" stroke-width="3" stroke-linecap="round" opacity=".82"/>
+ <path d="M88 345c46 47 105 71 168 63 52-7 77-43 130-42 23 0 42 6 58 16-37 43-91 72-153 72-82 0-157-42-203-109Z" fill="none" stroke="#8AF9E8" stroke-opacity=".62" stroke-width="2"/>
+ <circle cx="256" cy="254" r="106" fill="url(#core)"/>
+ <circle cx="256" cy="254" r="73" fill="#1B2039" fill-opacity=".78" stroke="#E7FFFF" stroke-opacity=".66" stroke-width="1.5"/>
+ <circle cx="256" cy="254" r="64" stroke="url(#ribbon)" stroke-width="2" opacity=".88"/>
+ <path d="M222 315V194h49c33 0 52 18 52 47s-19 47-52 47h-21v27h-28Zm28-52h19c17 0 26-8 26-22s-9-22-26-22h-19v44Z" fill="url(#letter)" filter="url(#shine)"/>
+ <circle cx="111" cy="164" r="3" fill="#D7FFFF"/><circle cx="386" cy="133" r="2.5" fill="#FFE1F2"/><circle cx="415" cy="343" r="3" fill="#C4FFF5"/><circle cx="132" cy="390" r="2" fill="#FFE1F2"/>
+ <rect width="512" height="512" rx="38" fill="url(#grain)"/>
+ <rect x="12" y="12" width="488" height="488" rx="31" fill="none" stroke="#F4FFFF" stroke-opacity=".16"/>
+</svg>
