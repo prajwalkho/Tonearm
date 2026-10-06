@@ -4,10 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="A dark, responsive music player for songs directed by Prajwal Khot using AI technology.">
-<meta name="theme-color" content="#0c0e13">
+<meta name="theme-color" content="#0b0d11">
 <title>Tonearm – Music Player</title>
 <link rel="icon" type="image/png" href="./Photos/TONEARM%20logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0c0e13;--s1:#141822;--s2:#1d2230;--s3:#283042;--tx:#eef0f6;--mu:#8b93a8;--ac:#9b8cff;--like:#ff6b8b;--r:14px;font-family:'Bricolage Grotesque',system-ui,sans-serif}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
@@ -194,6 +193,115 @@ nav{display:none}main{padding:14px 16px 24px}
 .feat{flex-direction:column;align-items:flex-start}.hero{align-items:center}
 #toast{bottom:150px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Tonearm product polish: restrained surfaces, crisp type, and artwork-led pages. */
+:root{--bg:#0b0d11;--s1:#12161d;--s2:#1a2028;--s3:#27313b;--tx:#f0f3f4;--mu:#9ba6ae;--ac:#78d4bb;--like:#f1788b;--r:10px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{background:var(--bg);letter-spacing:.005em}
+#app{gap:8px;padding:8px}
+nav{background:#11151b;border:1px solid #ffffff08;border-radius:10px;padding:18px 10px}
+.logo{font-size:20px;padding-bottom:20px;letter-spacing:-.035em}
+.logo img{width:38px;height:38px}
+.nl{border-radius:7px;padding:10px 12px;gap:12px;font-size:14px;font-weight:550}
+.nl:hover{background:#1a2028}.nl.on{background:#202830;color:var(--tx);box-shadow:inset 2px 0 var(--ac)}
+.pls{border-color:#252b33}.pls h3{font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:2px 12px 8px}
+main{background:#11151b;border:1px solid #ffffff08;border-radius:10px;padding:30px clamp(22px,3vw,42px) 42px}
+h1{font-size:clamp(26px,3vw,36px);letter-spacing:-.035em;font-weight:720;line-height:1.12}
+h2{font-size:19px;letter-spacing:-.02em;margin:30px 0 12px;font-weight:680}
+.sub{color:#a1aab1}
+.grid{grid-template-columns:repeat(auto-fill,minmax(156px,1fr));gap:12px}
+.card{background:transparent;border:1px solid transparent;border-radius:8px;padding:10px;transition:background .18s,border-color .18s,transform .18s;}
+.card:hover{background:#1a2028;border-color:#29323c;transform:translateY(-2px)}
+.card b{font-size:14px;font-weight:650;margin-top:9px}
+.card span{font-size:12px;line-height:1.45}
+.cv{border-radius:7px}
+.playlist-cover{box-shadow:none;background:#1a2028}
+.playlist-cover:after{border-color:#ffffff18;background:transparent;box-shadow:none}
+.playlist-cover img{transition:transform .28s ease}
+.card:hover .playlist-cover img,.nl:hover .playlist-cover img,dialog .it:hover .playlist-cover img{transform:scale(1.025);filter:none}
+.playlist-cover.option,.playlist-cover.nav{border-radius:6px}
+.album-brand-cover{box-shadow:none}
+.artist-art{box-shadow:none}
+.hero{gap:26px;align-items:flex-end;padding:8px 0 18px}
+.hero .cv{width:clamp(148px,20vw,228px);box-shadow:0 14px 28px #0006}
+.hero h1{font-size:clamp(32px,4vw,48px);margin:5px 0 6px}
+.hero .sub{line-height:1.55}
+.hero .bar{margin:16px 0 0}
+.feat{gap:22px;padding:20px;background:#171c23;border:1px solid #ffffff0b;border-radius:10px;margin:18px 0 24px}
+.feat .cv{width:138px;border-radius:7px}
+.feat h1{font-size:clamp(25px,3vw,32px)!important}
+.feat .btn{margin-top:14px}
+.song-cover{background:linear-gradient(145deg,var(--art-a),var(--art-b) 62%,var(--art-c))!important}
+.song-cover:after{opacity:.22}.song-cover .art-glow{opacity:.24}
+.song-cover.is-playing{animation:none}
+.song-cover.is-playing .art-glow{opacity:.5}
+.resume-card.is-active{border-color:#78d4bb66;background:#1c2928;box-shadow:none}
+.resume-live{border-color:#ffffff20;background:#101713e8}
+.resume-live i:before,.resume-live i:after,.resume-live b{background:var(--ac)}
+.row{gap:14px;padding:8px 10px;border-radius:7px;transition:background .14s}
+.row:hover{background:#1a2028}
+.row.cur{background:#192321;box-shadow:inset 2px 0 var(--ac)}
+.row.cur .t{color:#9ce6d2}
+.row .cv{border-radius:5px}
+.row .ac{opacity:.72}
+.row .a{font-size:12px}
+.row .al{font-size:13px}
+.ib{border-radius:7px;color:#a8b0b7;transition:background .15s,color .15s}
+.ib:hover{color:var(--tx);background:#252d36}
+.ib.on{color:var(--ac)}
+.pp{background:var(--ac);color:#0d1514;transition:transform .15s,background .15s}
+.pp:hover{transform:scale(1.045);background:#9ae5d1}
+.btn{background:var(--ac);color:#0b1512;border-radius:7px;font-size:14px;padding:10px 16px;transition:background .15s,transform .15s}
+.btn:hover{background:#9ae5d1;transform:translateY(-1px)}
+.btn.g{background:#242b33;color:var(--tx)}.btn.g:hover{background:#303943}
+.pb{background:var(--ac);color:#0c1513;box-shadow:0 3px 10px #0005}
+.pb:hover{transform:scale(1.04)}
+.bar{gap:8px}
+.srch{background:#191f26;border:1px solid #303943;border-radius:8px;padding:12px 14px;margin:16px 0}
+.srch:focus{border-color:var(--ac);outline:none}
+#player{background:#151a20;border:1px solid #ffffff0c;border-radius:10px;padding:10px 18px;gap:18px;box-shadow:0 -8px 30px #0002}
+.np .cv{border-radius:6px}
+.np b{font-size:14px;font-weight:650}.np span{font-size:12px}
+.btns{gap:8px}.btns .pp{width:40px;height:40px}
+.seek{font-size:11px;gap:9px}
+input[type=range]{accent-color:var(--ac);height:4px}
+input[type=range]::-webkit-slider-thumb{width:12px;height:12px;background:var(--ac)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--ac)}
+.viz-wrap{height:20px;opacity:.1}.viz-wrap.active{opacity:.7}
+.youtube-promo{border:1px solid #31363d;border-radius:10px;background:#171b21;padding:18px 20px;margin-top:32px;animation:none}
+.youtube-promo:before{display:none}
+.youtube-mark{width:40px;height:30px;border-radius:7px;box-shadow:none}
+.youtube-promo:hover .youtube-mark{transform:none;box-shadow:none}
+.youtube-handle{color:#ff9aa2}
+.youtube-cta{min-height:40px;padding:0 14px;border-radius:7px;box-shadow:none}
+.youtube-cta:hover{background:#e91d2e;transform:translateY(-1px);box-shadow:none}
+.brand-footer{border-color:#282e35}
+.empty{padding:52px 20px}.empty h3{font-size:18px}
+dialog{border-radius:12px;background:#171c23;border-color:#303740;box-shadow:0 20px 70px #0008}
+dialog input{border-radius:7px;background:#11151b}
+dialog .playlist-type{border-radius:8px;border-color:#303740}
+dialog .playlist-type:has(input:checked){border-color:#78d4bb66;background:#78d4bb0c}
+dialog .playlist-type input{accent-color:var(--ac)}
+#toast{border-radius:7px;background:#eef2ef;color:#111815}
+@media(max-width:1024px){nav{padding:16px 8px}.grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))}main{padding-left:26px;padding-right:26px}}
+@media(max-width:700px){
+ #app{gap:5px;padding:5px}main{padding:16px 14px 28px;border-radius:9px}
+ .mobile-brand{font-size:17px;margin-bottom:16px}.mobile-brand img{width:32px;height:32px}
+ h1{font-size:27px}.grid{grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:8px}
+ .card{padding:8px;border-radius:7px}.card b{font-size:13px}
+ .feat{flex-direction:row;align-items:center;padding:14px;gap:14px}.feat .cv{width:94px}.feat .sub{font-size:12px}.feat p{line-height:1.4}
+ .hero{gap:16px;align-items:center}.hero .cv{width:clamp(110px,34vw,160px)}.hero h1{font-size:30px}
+ #player{border-radius:9px;padding:9px 10px;gap:6px 9px}.np{gap:8px}.np .cv{width:44px}.np b{font-size:12px}.np span{font-size:11px}
+ .btns{gap:4px}.btns .pp{width:38px;height:38px}.btns .ib{padding:6px}.btns .x{display:none}
+ #bn{background:#151a20;border:1px solid #ffffff0b;border-radius:9px;padding:4px 2px;justify-content:space-around;gap:0}
+ #bn .nl{flex:1;min-width:0;gap:2px;padding:5px 2px;font-size:9px;border-radius:6px}
+ #bn .nl span{display:block;white-space:nowrap}
+ #bn .nl svg{width:19px;height:19px}
+ .youtube-promo{margin-top:28px;padding:15px;border-radius:9px}
+ .row{gap:8px;padding:7px 5px}.row .tt{gap:9px}.row .cv{width:38px}.row .ac .ad{display:none}
+ .row .a.added{display:none}
+ #toast{bottom:145px}
+}
+@media(max-width:390px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feat .cv{width:82px}.feat .btn{padding:9px 11px;font-size:12px}.mobile-brand{margin-bottom:12px}}
 </style>
 </head>
 <body>
@@ -382,7 +490,7 @@ const head=(cls,cv,kind,title,sub,ctx,extra='')=>`<div class="hero ${cls}">${cv}
 
 /* ---------- Views ---------- */
 const V={
- home(){const h=new Date().getHours(),g=h<12?'Good morning':h<18?'Good afternoon':'Good evening',f=ALBUMS[(new Date().getDate())%ALBUMS.length],a=AR(f.artist);
+ home(){const h=new Date().getHours(),g=h<12?'Good morning':h<18?'Good afternoon':'Good evening',f=ALBUMS[0],a=AR(f.artist);
   const rec=S.recent.slice(0,6);
   return `<h1>${g}</h1><div class="feat">${albumCover(f)}<div><span class="sub">Featured album</span><h1 style="font-size:32px">${esc(f.title)}</h1><p class="sub">Directed by ${esc(a.name)} · Created using AI technology · ${f.tracks.length} songs</p>
   <button class="btn" data-a="playctx" data-ctx="album:${f.id}" data-i="0">Play album</button> <a class="btn g" href="#/album/${f.id}">View album</a></div></div>
@@ -417,7 +525,7 @@ const NAV=[['#/','home','Home'],['#/search','search','Search'],['#/library','lib
 function shell(){const h=location.hash||'#/';const lk=(x,i,l,e)=>`<a class="nl ${h===x?'on':''}" href="${x}" aria-label="${l}">${ic(i)}<span>${l}</span></a>`;
  $('nav').innerHTML=`<a class="logo" href="#/" aria-label="Tonearm home">${brandImage()}<span aria-hidden="true">Tonearm</span></a>${NAV.map(n=>lk(...n)).join('')}${lk('#/liked','heart','Liked songs')}${lk('#/recent','clock','Recently played')}
  <div class="pls"><h3><span>Playlists</span><button data-a="newpl" aria-label="Create playlist">${ic('plus')}</button></h3>${S.playlists.map(p=>`<a class="nl ${h==='#/playlist/'+p.id?'on':''}" href="#/playlist/${p.id}" title="${esc(p.name)}">${playlistCover(p,'nav')}<span>${esc(p.name)}</span></a>`).join('')}</div>`;
- $('#bn').innerHTML=[...NAV,['#/queue','queue','Queue']].map(n=>lk(...n)).join('')}
+ $('#bn').innerHTML=[...NAV,['#/liked','heart','Liked'],['#/recent','clock','Recent'],['#/queue','queue','Queue']].map(n=>lk(...n)).join('')}
 let rt=0;
 function route(quiet){clearTimeout(rt);const m=$('#main'),h=location.hash||'#/',[,p,arg]=h.split('/'),keep=m.scrollTop,searchQuery=p==='search'?($('#q')?.value||''):'';shell();
 const render=()=>{try{const fn=V[p||'home'];m.innerHTML=mobileBrand()+(fn&&p!=='results'&&p!=='nf'?fn(p==='search'?searchQuery:decodeURIComponent(arg||'')) :V.nf())+youtubePromo()+brandFooter();
