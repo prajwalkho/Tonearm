@@ -6,7 +6,7 @@ A responsive static music player for songs directed by Prajwal Khot using AI tec
 
 The project is ready to publish from its repository root. The Vercel configuration disables build and install commands and serves `.` as the output directory. Netlify and GitHub Pages can also publish the root directory as a static site.
 
-Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song URLs are relative to the site root; no local machine paths or runtime API are used.
+Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, `assets/playlists/`, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song and artwork URLs are relative to the site root; no local machine paths or runtime API are used.
 
 ## Updating songs
 
@@ -29,6 +29,8 @@ Popular is generated from the song manifest. Krishna Kanhaiya, Jai Sri Ram, Jai 
 New user playlists can be permanent or temporary. Permanent playlists are saved in the browser's local storage for that device and site address, including through refreshes, browser restarts, and redeployments at the same address. Temporary playlists are held in session storage and disappear when their browser tab/session ends. Both types remain editable while available.
 
 Each song added to a playlist can independently be added permanently or temporarily. Permanent additions are stored with the playlist; temporary additions remain in memory only and disappear on refresh. A permanent addition to a temporary playlist promotes that playlist to permanent so the saved song has a playlist to remain in. Playlist rows label each song's membership type.
+
+Permanent playlists use the supplied square artwork, optimized as high-quality JPEGs in `assets/playlists/`, independent of their current song list. The original PNGs remain in `Photos/`. This keeps artwork stable as the catalog changes and across static deployments.
 
 ## Local preview
 

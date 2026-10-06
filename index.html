@@ -42,6 +42,12 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .pb{width:44px;height:44px;border-radius:50%;background:var(--ac);color:#0c0e13;display:grid;place-items:center;box-shadow:0 6px 16px #0008}
 .pb:hover{transform:scale(1.07)}
 .cv{aspect-ratio:1;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:2.4em;color:#fff9;overflow:hidden}
+.playlist-cover{position:relative;isolation:isolate;background:#211c39;box-shadow:inset 0 0 0 1px #ffffff26,0 8px 24px #07091035}
+.playlist-cover:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border:1px solid #ffffff24;border-radius:inherit;background:linear-gradient(145deg,#ffffff16,transparent 28%,transparent 72%,#05061332);box-shadow:inset 0 0 28px #090b1b20}
+.playlist-cover img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:auto;transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s}
+.card:hover .playlist-cover img,.nl:hover .playlist-cover img,dialog .it:hover .playlist-cover img{transform:scale(1.045);filter:saturate(1.1) brightness(1.05)}
+.playlist-cover.option{width:38px;height:38px;aspect-ratio:auto;border-radius:8px;flex:none;font-size:17px}
+.playlist-cover.nav{width:25px;height:25px;aspect-ratio:auto;border-radius:6px;flex:none;font-size:12px}
 .song-cover{--art-a:#293352;--art-b:#473360;--art-c:#151b2c;position:relative;isolation:isolate;display:block!important;color:#fff;background:linear-gradient(145deg,var(--art-a),var(--art-b) 58%,var(--art-c))!important;background-size:150% 150%!important;transition:filter .35s,transform .35s}
 .song-cover:before,.song-cover:after{content:"";position:absolute;inset:0;pointer-events:none}
 .song-cover:before{z-index:-1;background:radial-gradient(circle at 74% 28%,var(--art-a) 0,transparent 43%),radial-gradient(ellipse at 22% 88%,var(--art-b) 0,transparent 52%);opacity:.9}
@@ -314,12 +320,14 @@ const trackRow=(id,i,ctx,opts={})=>{const t=T(id),on=P.cur&&P.cur.id===id;
  ${opts.rm?`<button class="ib" data-a="${opts.pl?'rmpl':'rmq'}" ${opts.pl?`data-pl="${opts.pl}"`:''} data-i="${i}" data-id="${id}" aria-label="${opts.pl?'Remove from playlist':'Remove'}">${ic('x')}</button>`:''}</span><span class="tm">${fmt(t.dur)}</span></div>`};
 const list=(ids,ctx,o)=>ids.map((id,i)=>trackRow(id,i,ctx,o)).join('');
 const playlistTrackRow=(playlist,id,index)=>{const temporary=(S.temporaryAdds[playlist.id]||[]).includes(id);return trackRow(id,index,'pl:'+playlist.id,{rm:temporary,membership:temporary?'Temporary':'Permanent',pl:playlist.id})};
+const PLAYLIST_ARTWORK={p1:'krishna.jpg',p2:'ram.jpg',p3:'hanuman.jpg',p4:'ganesha.jpg',p5:'romantic.jpg',popular:'popular.jpg'};
+const playlistCover=(playlist,variant='')=>{const artwork=PLAYLIST_ARTWORK[playlist.id];return artwork?`<div class="cv playlist-cover ${variant}" aria-hidden="true"><img src="./assets/playlists/${artwork}" alt="" loading="lazy" decoding="async"></div>`:cover(240,playlist.name[0],`playlist-cover ${variant}`)};
 const albumCard=a=>`<a class="card" href="#/album/${a.id}">${cover(a.hue,a.title[0])}<b>${esc(a.title)}</b><span>Directed by ${esc(AR(a.artist).name)} · ${a.tracks.length} songs</span><button class="pb" data-a="playctx" data-ctx="album:${a.id}" data-i="0" aria-label="Play ${esc(a.title)}">${ic('play')}</button></a>`;
 const artistCard=a=>`<a class="card round" href="#/artist/${a.id}">${cover(a.hue,a.name[0])}<b>${esc(a.name)}</b><span>Director · AI-created music</span></a>`;
 const playlistType=p=>p.id==='popular'?'Songs folder':isPermanentPlaylist(p.id)||p.storage!=='temporary'?'Permanent playlist':'Temporary · This session';
 const youtubePromo=()=>`<section class="youtube-promo" aria-label="Follow Tonearm's YouTube channel"><div class="youtube-copy"><span class="youtube-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></span><div><h2>Follow on YouTube</h2><p>Enjoying the music? Visit and subscribe for more tracks and updates.</p><span class="youtube-handle">@pk_lord</span></div></div><a class="youtube-cta" href="https://youtube.com/@pk_lord" target="_blank" rel="noopener noreferrer">Visit YouTube Channel <span aria-hidden="true">↗</span></a></section>`;
 const playlistTracks=p=>[...new Set([...p.tracks,...(S.temporaryAdds[p.id]||[])])].filter(id=>T(id));
-const plCard=p=>{const ids=playlistTracks(p);return `<a class="card" href="#/playlist/${p.id}">${cover(ids[0]!=null?AL(T(ids[0]).album).hue:240,p.name[0])}<b>${esc(p.name)}</b><span>${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}</span><button class="pb" data-a="playctx" data-ctx="pl:${p.id}" data-i="0" aria-label="Play ${esc(p.name)}">${ic('play')}</button></a>`};
+const plCard=p=>{const ids=playlistTracks(p);return `<a class="card" href="#/playlist/${p.id}">${playlistCover(p)}<b>${esc(p.name)}</b><span>${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}</span><button class="pb" data-a="playctx" data-ctx="pl:${p.id}" data-i="0" aria-label="Play ${esc(p.name)}">${ic('play')}</button></a>`};
 const empty=(h,p,btn)=>`<div class="empty"><h3>${h}</h3><p>${p}</p>${btn||''}</div>`;
 const ctxIds=c=>{const[k,v]=c.split(':');return k==='album'?AL(+v).tracks:k==='artist'?TRACKS.filter(t=>t.artist==+v).map(t=>t.id):k==='pl'?playlistTracks(S.playlists.find(p=>p.id===v)||{tracks:[]}):k==='liked'?S.liked:k==='recent'?S.recent:k==='all'?TRACKS.map(t=>t.id):k==='ids'?v.split(',').map(Number):[]};
 const head=(cls,cv,kind,title,sub,ctx,extra='')=>`<div class="hero ${cls}">${cv}<div><span class="sub">${kind}</span><h1>${title}</h1><p class="sub">${sub}</p>
@@ -352,7 +360,7 @@ const V={
   return head('rd',cover(a.hue,a.name[0]),'Director · AI-created music',esc(a.name),`${ids.length} songs · Created using AI technology`,'artist:'+a.id)+`<h2>Popular</h2>${list(ids,'artist:'+a.id)}<h2>Discography</h2><div class="grid">${ALBUMS.filter(x=>x.artist===a.id).map(albumCard).join('')}</div>`},
  playlist(id){const p=S.playlists.find(x=>x.id===id);if(!p)return V.nf();const protectedPlaylist=isPermanentPlaylist(p.id),ids=playlistTracks(p);
   const actions=p.id==='popular'?'<span class="sub">Synced from Songs/</span>':protectedPlaylist?'<span class="sub">Permanent playlist · Protected</span>':`<button class="ib" data-a="renpl" data-id="${p.id}" aria-label="Rename playlist">Rename</button><button class="ib" data-a="delpl" data-id="${p.id}" aria-label="Delete playlist">Delete</button>`;
-  return head('',cover(ids[0]!=null?AL(T(ids[0]).album).hue:240,p.name[0]),'Playlist',esc(p.name),`${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}`,'pl:'+p.id,actions)+
+  return head('',playlistCover(p),'Playlist',esc(p.name),`${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}`,'pl:'+p.id,actions)+
   (ids.length?ids.map((tid,i)=>playlistTrackRow(p,tid,i)).join(''):empty('This playlist is empty','Use the + button on any song to add it here.','<a class="btn" href="#/search">Find songs</a>'))},
  queue(){const n=S.queue.length;if(!n)return `<h1>Queue</h1>`+empty('Your queue is empty','Play a song or use + on a song to add it to the queue.','<a class="btn" href="#/">Browse music</a>');
   return `<h1>Queue</h1><h2>Now playing</h2>${trackRow(S.queue[S.qi],S.qi,'q')}<h2>Next up</h2>${S.queue.slice(S.qi+1).length?S.queue.slice(S.qi+1).map((id,k)=>trackRow(id,S.qi+1+k,'q',{rm:1})).join(''):'<p class="sub">Nothing after this song.</p>'}`},
@@ -362,7 +370,7 @@ const V={
 const NAV=[['#/','home','Home'],['#/search','search','Search'],['#/library','lib','Library']];
 function shell(){const h=location.hash||'#/';const lk=(x,i,l,e)=>`<a class="nl ${h===x?'on':''}" href="${x}" aria-label="${l}">${ic(i)}<span>${l}</span></a>`;
  $('nav').innerHTML=`<div class="logo"><i></i><span>Tonearm</span></div>${NAV.map(n=>lk(...n)).join('')}${lk('#/liked','heart','Liked songs')}${lk('#/recent','clock','Recently played')}
- <div class="pls"><h3><span>Playlists</span><button data-a="newpl" aria-label="Create playlist">${ic('plus')}</button></h3>${S.playlists.map(p=>`<a class="nl ${h==='#/playlist/'+p.id?'on':''}" href="#/playlist/${p.id}" title="${esc(p.name)}"><span style="display:contents">${ic('queue')}</span><span>${esc(p.name)}</span></a>`).join('')}</div>`;
+ <div class="pls"><h3><span>Playlists</span><button data-a="newpl" aria-label="Create playlist">${ic('plus')}</button></h3>${S.playlists.map(p=>`<a class="nl ${h==='#/playlist/'+p.id?'on':''}" href="#/playlist/${p.id}" title="${esc(p.name)}">${playlistCover(p,'nav')}<span>${esc(p.name)}</span></a>`).join('')}</div>`;
  $('#bn').innerHTML=[...NAV,['#/queue','queue','Queue']].map(n=>lk(...n)).join('')}
 let rt=0;
 function route(quiet){clearTimeout(rt);const m=$('#main'),h=location.hash||'#/',[,p,arg]=h.split('/'),keep=m.scrollTop,searchQuery=p==='search'?($('#q')?.value||''):'';shell();
@@ -378,7 +386,7 @@ addEventListener('hashchange',()=>route());
 const dlg=$('#dlg');
 const openDlg=h=>{dlg.innerHTML=h;if(!dlg.open)dlg.showModal()};
 function addMenu(id){const t=T(id);openDlg(`<h3>Add “${esc(t.title)}”</h3><button class="it" data-a="enq" data-id="${id}">${ic('queue')} Add to queue</button>
- ${S.playlists.filter(p=>p.id!=='popular').map(p=>`<button class="it" data-a="topl" data-pl="${p.id}" data-id="${id}">${ic('plus')} ${esc(p.name)} ${playlistTracks(p).includes(id)?`<span class="sub">(${(S.temporaryAdds[p.id]||[]).includes(id)?'temporary':'permanent'})</span>`:''}</button>`).join('')}
+ ${S.playlists.filter(p=>p.id!=='popular').map(p=>`<button class="it" data-a="topl" data-pl="${p.id}" data-id="${id}">${playlistCover(p,'option')}<span>${esc(p.name)} ${playlistTracks(p).includes(id)?`<span class="sub">(${(S.temporaryAdds[p.id]||[]).includes(id)?'temporary':'permanent'})</span>`:''}</span></button>`).join('')}
  <button class="it" data-a="newpl" data-id="${id}">${ic('plus')} New playlist…</button>`)}
 function addSongOptions(playlist,id){const t=T(id);if(!t)return toast('This song is no longer available');const permanent=playlist.tracks.includes(id),temporary=(S.temporaryAdds[playlist.id]||[]).includes(id),status=permanent?'Already added permanently':temporary?'Already added temporarily':'',permanentNote=playlist.storage==='temporary'?'Saves the song and keeps this playlist on this device permanently.':'Saved with this playlist after refresh and restart.';
  openDlg(`<h3>Add to ${esc(playlist.name)}</h3><p class="sub">${esc(t.title)}${status?` · ${status}`:''}</p>
