@@ -46,6 +46,6 @@ export async function scanSongs() {
     file,
     title: titleFromFilename(file),
     artist: 'Prajwal Khot',
-    album: 'Local Collection',
+    album: 'Tonearm',
   }));
 }

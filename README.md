@@ -1,29 +1,31 @@
-# Tonearm
+# Tonearm – Music Player
 
-A responsive, single-page music player for songs directed by Prajwal Khot using AI technology.
-
-## Run locally
-
-For live folder synchronization, use Node.js 18 or newer and run `npm run dev`. Open `http://127.0.0.1:4173`. The local server scans `Songs/` on each library check; the open player refreshes its catalog every three seconds. Added and deleted songs appear without restarting the server or reloading the page.
-
-You can also open `index.html` directly. That mode uses the generated `songs-manifest.js` snapshot and continues to play the catalog it contains. A browser opened directly from disk cannot watch the folder; run `npm run build` after changing `Songs/`, then reload the page.
+A responsive static music player for songs directed by Prajwal Khot using AI technology.
 
 ## Deploy
 
-The deployed site is static; the included Node.js scripts generate the song manifest during build.
+The project is ready to publish from its repository root. The Vercel configuration disables build and install commands and serves `.` as the output directory. Netlify and GitHub Pages can also publish the root directory as a static site.
 
-1. Run `npm run build` before deploying. It scans `Songs/` and regenerates `songs-manifest.js`.
-2. Publish the repository root as the site root; leave the build command empty if the manifest has already been generated, or use `npm run build` as the build command.
-3. Include `index.html`, `songs-manifest.js`, the complete `Songs/` folder, and the original redirect page in the deployment.
+Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song URLs are relative to the site root; no local machine paths or runtime API are used.
 
-A static host serves the manifest snapshot. When songs change after deployment, rebuild and redeploy. Continuous synchronization on a hosted site requires a server/API with access to the live `Songs/` directory; `npm run dev` provides that API locally.
+## Updating songs
 
-The original `Tonearm – Music Player.html` filename redirects to `index.html` for existing links. The player and all 14 currently supplied songs are in `index.html` and `Songs/`.
+`Songs/` is the source of truth for Popular. When adding or removing supported audio files, regenerate and commit the manifest before deploying:
 
-## Permanent playlists
+```sh
+node scripts/generate-song-manifest.mjs
+```
 
-The player seeds four curated playlists on every launch: Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, and Ganesha. Their names and song selections are protected from edits and deletion. A fifth protected **Popular** playlist is rebuilt from the current song catalog. Playlists created in the app remain editable and are saved in the browser; removed tracks are pruned from saved playlists.
+The manifest generator scans the folder, creates stable IDs from filenames, derives readable titles, and ignores duplicate names. A static browser cannot watch the server's folder after page load, so a new deployment uses the latest committed manifest. Refreshing or redeploying after a folder change will show the updated catalog.
 
-## Credits and assets
+Song `addedAt` values are recorded the first time a filename appears in the generated manifest and preserved on later regenerations. User playlist creation times are saved with the playlist; built-in playlist dates are saved locally when the app first initializes. Dates are displayed in each viewer's local format and time zone. Existing songs and playlists without historical dates receive a one-time catalog/migration timestamp because their original add time is not available.
 
-Song titles come from the supplied filenames, with underscores and dashes converted to spaces. The project identifies Prajwal Khot as director and credits AI technology. The supplied audio files do not include standard artist or album-art tags, so the player uses its built-in stylized covers and collection presentation. Supported extensions are MP3, M4A, AAC, OGG/OGA, WAV, Opus, and FLAC (subject to browser codec support).
+Supported extensions: MP3, M4A, AAC, OGG/OGA, WAV, Opus, and FLAC, subject to browser codec support. The site includes built-in cover artwork and credits tracks to Prajwal Khot.
+
+## Playlists
+
+Popular is generated from the song manifest. Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, and Ganesha keep their curated starter selections and protected names; use a song's add menu to add extra available tracks to them. Those additions and user-created playlist contents are stored as song IDs, not copied song records. On each launch, the app filters playlist, liked-song, and recent-play references against the current manifest. Removing a song from `Songs/`, regenerating the manifest, and redeploying therefore clears that song from every playlist without deleting the playlists.
+
+## Local preview
+
+Open `index.html` directly, or serve the repository root with any static file server. No framework, external package, or backend is required.
