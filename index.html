@@ -78,6 +78,18 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .hero.rd .cv{border-radius:50%}
 .feat{display:flex;gap:24px;align-items:center;padding:22px;border-radius:20px;background:linear-gradient(120deg,var(--s3),var(--s2));margin:18px 0}
 .feat .cv{width:150px;flex:none;font-size:3rem}
+.youtube-promo{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:22px;overflow:hidden;margin:44px 0 4px;padding:20px 22px;border:1px solid #ff4a5738;border-radius:18px;background:radial-gradient(ellipse at 5% 50%,#ff334420,transparent 42%),linear-gradient(115deg,#1c202b,#171a23);animation:youtubeEnter .55s ease-out both}
+.youtube-promo:before{content:"";position:absolute;z-index:-1;width:170px;aspect-ratio:1;right:18%;top:-120px;border-radius:50%;background:#ff334414;filter:blur(8px)}
+.youtube-copy{display:flex;align-items:center;gap:15px;min-width:0}
+.youtube-mark{width:48px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none;background:#ff2638;box-shadow:0 6px 22px #ff263833;transition:transform .2s,box-shadow .2s}
+.youtube-mark svg{width:21px;height:21px;fill:white;stroke:none}
+.youtube-promo:hover .youtube-mark{transform:scale(1.07) rotate(-3deg);box-shadow:0 8px 28px #ff263855}
+.youtube-copy h2{font-size:18px;margin:0 0 3px;letter-spacing:-.02em}
+.youtube-copy p{color:var(--mu);font-size:13px;line-height:1.45}
+.youtube-handle{display:inline-block;color:#ff929a;font-size:12px;font-weight:600;margin-top:2px}
+.youtube-cta{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 17px;border-radius:24px;background:#ff2638;color:#fff;font-size:13px;font-weight:700;transition:transform .18s,background .18s,box-shadow .18s;box-shadow:0 5px 16px #ff263826}
+.youtube-cta:hover{background:#ed1d2e;transform:translateY(-2px);box-shadow:0 8px 22px #ff263844}
+@keyframes youtubeEnter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 .eq{display:flex;gap:3px;align-items:flex-end;height:16px}.eq i{width:3px;background:var(--ac);height:100%;animation:eq .8s infinite ease-in-out;transform-origin:bottom}
 .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
 @keyframes eq{50%{transform:scaleY(.3)}}
@@ -136,6 +148,9 @@ nav{display:none}main{padding:20px 16px 24px}
 #bn{grid-area:bn;display:flex;background:var(--s1);border-radius:var(--r);justify-content:space-around;padding:4px}
 #bn .nl{flex-direction:column;gap:2px;font-size:11px;padding:6px 10px;width:auto;align-items:center}
 #player{grid-template-columns:1fr auto;gap:6px 10px;padding:10px 12px}
+.youtube-promo{align-items:flex-start;flex-direction:column;gap:14px;margin-top:30px;padding:17px}
+.youtube-copy{align-items:flex-start}.youtube-mark{width:42px;height:30px;border-radius:9px}.youtube-copy h2{font-size:16px}
+.youtube-cta{width:100%}
 .ctl{display:contents}.btns{grid-column:2;grid-row:1}.btns .x{display:none}.seek{grid-column:1/-1;grid-row:2}.seek span{display:none}.vol{display:none}
 .row{grid-template-columns:minmax(0,1fr) auto 40px}.row .n,.row .al{display:none}.row .ac .ad{display:none}
 .feat{flex-direction:column;align-items:flex-start}.hero{align-items:center}
@@ -302,6 +317,7 @@ const playlistTrackRow=(playlist,id,index)=>{const temporary=(S.temporaryAdds[pl
 const albumCard=a=>`<a class="card" href="#/album/${a.id}">${cover(a.hue,a.title[0])}<b>${esc(a.title)}</b><span>Directed by ${esc(AR(a.artist).name)} · ${a.tracks.length} songs</span><button class="pb" data-a="playctx" data-ctx="album:${a.id}" data-i="0" aria-label="Play ${esc(a.title)}">${ic('play')}</button></a>`;
 const artistCard=a=>`<a class="card round" href="#/artist/${a.id}">${cover(a.hue,a.name[0])}<b>${esc(a.name)}</b><span>Director · AI-created music</span></a>`;
 const playlistType=p=>p.id==='popular'?'Songs folder':isPermanentPlaylist(p.id)||p.storage!=='temporary'?'Permanent playlist':'Temporary · This session';
+const youtubePromo=()=>`<section class="youtube-promo" aria-label="Follow Tonearm's YouTube channel"><div class="youtube-copy"><span class="youtube-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></span><div><h2>Follow on YouTube</h2><p>Enjoying the music? Visit and subscribe for more tracks and updates.</p><span class="youtube-handle">@pk_lord</span></div></div><a class="youtube-cta" href="https://youtube.com/@pk_lord" target="_blank" rel="noopener noreferrer">Visit YouTube Channel <span aria-hidden="true">↗</span></a></section>`;
 const playlistTracks=p=>[...new Set([...p.tracks,...(S.temporaryAdds[p.id]||[])])].filter(id=>T(id));
 const plCard=p=>{const ids=playlistTracks(p);return `<a class="card" href="#/playlist/${p.id}">${cover(ids[0]!=null?AL(T(ids[0]).album).hue:240,p.name[0])}<b>${esc(p.name)}</b><span>${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}</span><button class="pb" data-a="playctx" data-ctx="pl:${p.id}" data-i="0" aria-label="Play ${esc(p.name)}">${ic('play')}</button></a>`};
 const empty=(h,p,btn)=>`<div class="empty"><h3>${h}</h3><p>${p}</p>${btn||''}</div>`;
@@ -350,7 +366,7 @@ function shell(){const h=location.hash||'#/';const lk=(x,i,l,e)=>`<a class="nl $
  $('#bn').innerHTML=[...NAV,['#/queue','queue','Queue']].map(n=>lk(...n)).join('')}
 let rt=0;
 function route(quiet){clearTimeout(rt);const m=$('#main'),h=location.hash||'#/',[,p,arg]=h.split('/'),keep=m.scrollTop,searchQuery=p==='search'?($('#q')?.value||''):'';shell();
- const render=()=>{try{const fn=V[p||'home'];m.innerHTML=fn&&p!=='results'&&p!=='nf'?fn(p==='search'?searchQuery:decodeURIComponent(arg||'')) :V.nf();
+const render=()=>{try{const fn=V[p||'home'];m.innerHTML=(fn&&p!=='results'&&p!=='nf'?fn(p==='search'?searchQuery:decodeURIComponent(arg||'')) :V.nf())+youtubePromo();
    const q=$('#q');if(q){q.oninput=()=>{$('#res').innerHTML=V.results(q.value)};if(!quiet)q.focus()}}
   catch(e){console.error(e);m.innerHTML=empty('Something went wrong','This page failed to load.','<a class="btn" href="#/">Back to home</a>')}
   m.scrollTop=quiet?keep:0;syncRows()};
