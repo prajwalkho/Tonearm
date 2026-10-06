@@ -24,7 +24,11 @@ Supported extensions: MP3, M4A, AAC, OGG/OGA, WAV, Opus, and FLAC, subject to br
 
 ## Playlists
 
-Popular is generated from the song manifest. Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, and Ganesha keep their curated starter selections and protected names; use a song's add menu to add extra available tracks to them. Those additions and user-created playlist contents are stored as song IDs, not copied song records. On each launch, the app filters playlist, liked-song, and recent-play references against the current manifest. Removing a song from `Songs/`, regenerating the manifest, and redeploying therefore clears that song from every playlist without deleting the playlists.
+Popular is generated from the song manifest. Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, Ganesha, and Romantic keep their curated starter selections and protected names; use a song's add menu to add extra available tracks to them. Those additions and user-created playlist contents are stored as song IDs, not copied song records. On each launch, the app filters playlist, liked-song, and recent-play references against the current manifest. Removing a song from `Songs/`, regenerating the manifest, and redeploying therefore clears that song from every playlist without deleting the playlists. Romantic is the permanent seven-song selection shown in the project reference, with its matching violet playlist artwork.
+
+New user playlists can be permanent or temporary. Permanent playlists are saved in the browser's local storage for that device and site address, including through refreshes, browser restarts, and redeployments at the same address. Temporary playlists are held in session storage and disappear when their browser tab/session ends. Both types remain editable while available.
+
+Each song added to a playlist can independently be added permanently or temporarily. Permanent additions are stored with the playlist; temporary additions remain in memory only and disappear on refresh. A permanent addition to a temporary playlist promotes that playlist to permanent so the saved song has a playlist to remain in. Playlist rows label each song's membership type.
 
 ## Local preview
 
