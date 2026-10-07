@@ -8,7 +8,7 @@ export const SONGS_DIR = join(ROOT_DIR, 'Songs');
 export const SUPPORTED_AUDIO = new Set(['.mp3', '.m4a', '.aac', '.ogg', '.oga', '.wav', '.opus', '.flac']);
 
 export function titleFromFilename(filename) {
-  return filename.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return filename.replace(/\.[^.]+$/, '').replace(/([A-Za-z])Version(?=\s*\d)/g, '$1 Version').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 export function stableSongId(filename) {

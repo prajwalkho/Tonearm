@@ -88,6 +88,10 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .theme-love{--art-a:#ff83aa;--art-b:#b54a8a;--art-c:#35224d}
 .theme-dawn{--art-a:#ffc36e;--art-b:#ed7658;--art-c:#54305a}
 .theme-temple{--art-a:#96c66b;--art-b:#3a9b85;--art-c:#153c48}
+.theme-motivation{--art-a:#83d2a1;--art-b:#327c6b;--art-c:#142a2c}
+.theme-india{--art-a:#ffad58;--art-b:#377cba;--art-c:#252b55}
+.theme-desi{--art-a:#f3a14c;--art-b:#d54d55;--art-c:#3b2350}
+.theme-home{--art-a:#d2a978;--art-b:#755b57;--art-c:#29293a}
 .art-glow{position:absolute;z-index:0;width:76%;aspect-ratio:1;right:-21%;top:-24%;border-radius:50%;background:radial-gradient(circle,#ffffff75 0, #ffffff18 36%,transparent 70%);opacity:.46;transition:opacity .5s,transform .8s}
 .art-motif{position:absolute;top:8%;right:10%;font-size:.92em;line-height:1;color:#fff9;text-shadow:0 5px 20px #080d2e66;transform:rotate(var(--art-turn,-4deg));transition:transform .6s,opacity .4s;opacity:.84}
 .art-initial{position:absolute;left:11%;bottom:7%;font-size:.98em;line-height:1;color:#fff;letter-spacing:-.08em;text-shadow:0 4px 24px #060b2766}
@@ -156,6 +160,7 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .viz-wrap canvas{display:block;width:100%;height:100%;transition:opacity .35s ease}
 .viz-wrap.is-changing canvas{opacity:.35;filter:blur(1px)}
 .viz-wrap[data-theme="krishna"]{--viz-a:#66ead0;--viz-b:#a88cff}.viz-wrap[data-theme="river"]{--viz-a:#6acaff;--viz-b:#8b9dff}.viz-wrap[data-theme="ram"]{--viz-a:#ffc66b;--viz-b:#ff805f}.viz-wrap[data-theme="hanuman"]{--viz-a:#ff9b49;--viz-b:#ff536e}.viz-wrap[data-theme="ganesha"]{--viz-a:#ffd36f;--viz-b:#ff766b}.viz-wrap[data-theme="rain"]{--viz-a:#69ddff;--viz-b:#8b9cff}.viz-wrap[data-theme="stars"]{--viz-a:#8beaff;--viz-b:#bd9aff}.viz-wrap[data-theme="night"]{--viz-a:#a9b5ff;--viz-b:#7c80d8}.viz-wrap[data-theme="moon"]{--viz-a:#b7a5ff;--viz-b:#70c4ff}.viz-wrap[data-theme="love"]{--viz-a:#ff91bd;--viz-b:#bd87ff}.viz-wrap[data-theme="dawn"]{--viz-a:#ffd781;--viz-b:#ff9d72}.viz-wrap[data-theme="temple"]{--viz-a:#ffc56b;--viz-b:#ee7c68}
+.viz-wrap[data-theme="motivation"]{--viz-a:#83d2a1;--viz-b:#55ac85}.viz-wrap[data-theme="india"]{--viz-a:#ffad58;--viz-b:#5ca0dd}.viz-wrap[data-theme="desi"]{--viz-a:#f3a14c;--viz-b:#e96077}.viz-wrap[data-theme="home"]{--viz-a:#d2a978;--viz-b:#9f807c}
 .pp{width:42px;height:42px;border-radius:50%;background:var(--tx);color:var(--bg);display:grid;place-items:center}.pp:hover{transform:scale(1.07)}
 .seek{display:flex;gap:10px;align-items:center;width:100%;font-size:12px;color:var(--mu);font-variant-numeric:tabular-nums}
 input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:5px;border-radius:5px;background:linear-gradient(90deg,var(--ac) var(--p,0%),var(--s3) var(--p,0%));cursor:pointer}
@@ -171,7 +176,7 @@ dialog .playlist-type{display:flex;align-items:flex-start;gap:10px;padding:11px 
 dialog .playlist-type:has(input:checked){border-color:var(--ac);background:#9b8cff12}
 dialog .playlist-type input{width:auto;margin-top:4px;accent-color:var(--ac)}
 .membership{display:inline-block!important;width:max-content;padding:1px 6px;border-radius:8px;color:#b9f6dc!important;background:#36ad7830;font-size:11px!important;margin-top:2px}
-.membership.temporary{color:#ffe1a6!important;background:#e5a83a30}
+.membership.temporary{color:#ffe1a6!important;background:#e5a83a30}.membership.mood{color:#a5dfd0!important;background:#78d4bb18}
 #toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,20px);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:30px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:9}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 #bn{display:none}
@@ -351,13 +356,17 @@ const SONG_THEMES=[
  {key:'krishna',match:/कृष्ण_कन्हैया|Saanware/i,motif:'❋'},
  {key:'river',match:/यमुना/i,motif:'≈'},
  {key:'ram',match:/अयोध्या|रघुकुल/i,motif:'दीप'},
- {key:'hanuman',match:/केसरी|पवनसुत/i,motif:'ॐ'},
- {key:'ganesha',match:/अगले_बरस|नन्हे_कदमों/i,motif:'ॐ'},
+ {key:'hanuman',match:/केसरी|पवनसुत|Jai Hanuman/i,motif:'ॐ'},
+ {key:'ganesha',match:/अगले_बरस|नन्हे_कदमों|Bappa Aaya/i,motif:'ॐ'},
+ {key:'motivation',match:/Ek Din Jeetenge|Khud Pe Bharosa|Zameen Se Falak|Zero Se Hero/i,motif:'↑'},
+ {key:'india',match:/Mera India|Tere Saath India/i,motif:'✦'},
+ {key:'desi',match:/Desi Dil Worldwide|Dil Dhadke Dhol Pe|Nach Re India/i,motif:'♫'},
+ {key:'home',match:/Ghar Ki Yaad|Maa Ke Haath Ka Khana/i,motif:'⌂'},
  {key:'rain',match:/Bheege/i,motif:'〰'},
  {key:'stars',match:/Taaron/i,motif:'✦'},
  {key:'night',match:/Raat_/i,motif:'☽'},
  {key:'moon',match:/Chandni|चाँदनी/i,motif:'☾'},
- {key:'love',match:/Bas_Tu|Janam_Janam|Knots_in_the_Sheets|Mita_De/i,motif:'♡'},
+ {key:'love',match:/Bas_Tu|Janam_Janam|Knots_in_the_Sheets|Mita_De|Chand Sa Tu|Dil Ki Notification|Online Wala Pyaar|Tera Naam Hi Kaafi|Tu Mile Toh|समा जा तू/i,motif:'♡'},
  {key:'dawn',match:/Morning_Prayer/i,motif:'☼'},
  {key:'temple',match:/मन_मंदिर/i,motif:'मंत्र'}
 ];
@@ -368,17 +377,30 @@ const tCover=t=>{const theme=songTheme(t),playing=P.cur&&P.cur.id===t.id&&P.play
 const CURATED_PLAYLISTS=[
  {id:'p1',name:'Krishna Kanhaiya',files:['कृष्ण_कन्हैया.mp3','यमुना_की_वो_शाम.mp3','यमुना_किनारे_चाँदनी.mp3','Saanware_Ki_Surat.mp3','Janam_Janam_Ki_Dor (1).mp3','Janam_Janam_Ki_Dor.mp3','मन_मंदिर_की_धुन.mp3']},
  {id:'p2',name:'Jai Sri Ram',files:['अयोध्या_की_भोर.mp3','केसरी_नंदन_का_तेज.mp3','रघुकुल_के_दीप.mp3']},
- {id:'p3',name:'Jai Hanuman',files:['केसरी_नंदन_का_तेज.mp3','पवनसुत_की_असीम_कृपा.mp3']},
- {id:'p4',name:'Ganesha',files:['नन्हे_कदमों_की_आहट.mp3']},
- {id:'p5',name:'Romantic',files:['Raat_Ka_Pehra.mp3','Taaron_Ki_Chhaon.mp3','Bas_Tu_Mere_Rubaru.mp3','Bheege_Raste.mp3','Chandni_Ki_Chaadar.mp3','Knots_in_the_Sheets.mp3','Mita_De_Sabhi_Faasle.mp3']}
+ {id:'p3',name:'Jai Hanuman',files:['केसरी_नंदन_का_तेज.mp3','पवनसुत_की_असीम_कृपा.mp3','Jai Hanuman.mp3','Jai Hanuman (1).mp3']},
+ {id:'p4',name:'Ganesha',files:['नन्हे_कदमों_की_आहट.mp3','Bappa Aaya.mp3','Bappa Aaya (1).mp3','Bappa Aaya (2).mp3']},
+ {id:'p5',name:'Romantic',files:['Raat_Ka_Pehra.mp3','Taaron_Ki_Chhaon.mp3','Bas_Tu_Mere_Rubaru.mp3','Bheege_Raste.mp3','Chandni_Ki_Chaadar.mp3','Knots_in_the_Sheets.mp3','Mita_De_Sabhi_Faasle.mp3','Chand Sa Tu.mp3','Chand Sa Tu (1).mp3','Chand Sa Tu (2).mp3','Chand Sa Tu (3).mp3','Dil Ki Notification Version 1.mp3','Dil Ki Notification Version 2.mp3','Online Wala Pyaar.mp3','Online Wala Pyaar (1).mp3','Tera Naam Hi Kaafi  Version 1.mp3','Tera Naam Hi KaafiVersion 2.mp3','Tu Mile Toh Version 1.mp3','Tu Mile Toh Version 2.mp3','समा जा तू  Version 1.mp3','समा जा तू  Version 2.mp3']}
 ];
+const MOOD_PLAYLISTS=[
+ {id:'mood-love',name:'❤️ Romantic & Love',art:'mood-romantic.svg',seed:'p5',match:/Bas Tu|Bheege Raste|Chand Sa Tu|Chandni|Janam Janam|Knots in the Sheets|Mita De|Online Wala Pyaar|Raat Ka Pehra|Sapno Ka Sheher|Taaron Ki Chhaon|Tu Mile Toh|समा जा तू|यमुना_किनारे_चाँदनी/i},
+ {id:'mood-peaceful',name:'😌 Peaceful & Relaxing',art:'mood-peaceful.svg',seed:'p1',match:/Morning Prayer|Saanware Ki Surat|Bheege Raste|Chandni|Sapno Ka Sheher|Taaron Ki Chhaon|Raat Ka Pehra|यमुना|मन_मंदिर/i},
+ {id:'mood-energy',name:'🔥 Energetic & Powerful',art:'mood-energy.svg',match:/Bappa Aaya|Jai Hanuman|Dil Dhadke Dhol Pe|Ek Din Jeetenge|Khud Pe Bharosa|Desi Dil Worldwide|Mera India|Nach Re India|Tere Saath India|Zameen Se Falak|Zero Se Hero/i},
+ {id:'mood-devotional',name:'🙏 Devotional & Spiritual',art:'mood-devotional.svg',seed:['p1','p2','p3','p4'],match:/Morning Prayer|Bappa Aaya|Jai Hanuman|Tera Naam Hi Kaafi|अगले_बरस|अयोध्या|कृष्ण|केसरी|नन्हे_कदमों|पवनसुत|मन_मंदिर|यमुना|रघुकुल/i},
+ {id:'mood-heartfelt',name:'😢 Emotional & Heartfelt',art:'mood-heartfelt.svg',match:/Ghar Ki Yaad|Maa Ke Haath Ka Khana|Mita De|Janam Janam|Bheege Raste|Mera India, Meri Kahani|Tere Saath India|Tera Naam Hi Kaafi|यमुना_की_वो_शाम|रघुकुल|मन_मंदिर|समा जा तू/i},
+ {id:'mood-night',name:'🌙 Calm & Late Night',art:'mood-night.svg',match:/Raat_Ka_Pehra|Taaron_Ki_Chhaon|Chandni|Chand Sa Tu|Bheege_Raste|Morning_Prayer|Saanware_Ki_Surat|Sapno Ka Sheher|यमुना/i},
+ {id:'mood-positive',name:'😊 Happy & Positive',art:'mood-positive.svg',match:/Bappa Aaya|Jai Hanuman|Ek Din Jeetenge|Khud Pe Bharosa|Desi Dil Worldwide|Dil Dhadke Dhol Pe|Mera India|Nach Re India|Tere Saath India|Zameen Se Falak|Zero Se Hero|अगले_बरस|नन्हे_कदमों|पवनसुत|केसरी/i},
+ {id:'mood-trending',name:'🎧 Trending & Popular',art:'mood-trending.svg',limit:12}
+];
+const MOOD_PLAYLIST_IDS=new Set(MOOD_PLAYLISTS.map(playlist=>playlist.id));
+const isMoodPlaylist=id=>MOOD_PLAYLIST_IDS.has(id);
+const moodPlaylistTracks=playlist=>{const seeds=Array.isArray(playlist.seed)?playlist.seed:[playlist.seed].filter(Boolean),seedIds=new Set(CURATED_PLAYLISTS.filter(item=>seeds.includes(item.id)).flatMap(item=>item.files.map(file=>TRACK_BY_FILE.get(file.normalize('NFC').toLocaleLowerCase())?.id).filter(id=>id!=null)));let matches=TRACKS.filter(track=>seedIds.has(track.id)||(!playlist.match&&playlist.limit)||playlist.match?.test(`${track.title} ${track.file} ${track.artist} ${track.album}`));if(playlist.limit)matches.sort((a,b)=>String(b.addedAt||'').localeCompare(String(a.addedAt||''))||a.title.localeCompare(b.title,'en'));return [...new Set(matches.map(track=>track.id))].slice(0,playlist.limit||Infinity)};
 const CURATED_SEED_TRACKS=new Map(CURATED_PLAYLISTS.map(({id,files})=>[id,files.map(file=>TRACK_BY_FILE.get(file.normalize('NFC').toLocaleLowerCase())?.id).filter(trackId=>trackId!=null)]));
 const isCuratedPlaylist=id=>CURATED_SEED_TRACKS.has(id);
 const isCuratedSeed=(playlistId,trackId)=>CURATED_SEED_TRACKS.get(playlistId)?.includes(Number(trackId))||false;
-const PERMANENT_PLAYLIST_IDS=new Set([...CURATED_PLAYLISTS.map(p=>p.id),'popular']);
+const PERMANENT_PLAYLIST_IDS=new Set([...CURATED_PLAYLISTS.map(p=>p.id),...MOOD_PLAYLIST_IDS,'popular']);
 const isPermanentPlaylist=id=>PERMANENT_PLAYLIST_IDS.has(id);
 const curatedPlaylists=(assigned={},dates={})=>CURATED_PLAYLISTS.map(({id,name})=>({id,name,createdAt:dates[id]||null,tracks:[...new Set([...(CURATED_SEED_TRACKS.get(id)||[]),...(assigned[id]||[])].filter(trackId=>TRACK_BY_ID.has(trackId)))]}));
-const builtInPlaylists=(assigned={},dates={})=>[...curatedPlaylists(assigned,dates),{id:'popular',name:'Popular',createdAt:dates.popular||null,tracks:TRACKS.map(track=>track.id)}];
+const builtInPlaylists=(assigned={},dates={})=>[...curatedPlaylists(assigned,dates),...MOOD_PLAYLISTS.map(playlist=>({id:playlist.id,name:playlist.name,createdAt:dates[playlist.id]||null,tracks:moodPlaylistTracks(playlist),storage:'permanent',autoMood:true})),{id:'popular',name:'Popular',createdAt:dates.popular||null,tracks:TRACKS.map(track=>track.id)}];
 const S={liked:[],recent:[],queue:[],qi:-1,shuffle:false,repeat:0,vol:.8,curatedTracks:{},playlistDates:{},
  playlists:builtInPlaylists(),temporaryAdds:{}};
 const STORE_KEY='tonearm-music-v3';
@@ -461,14 +483,14 @@ audio.addEventListener('loadedmetadata',()=>{const sk=$('#sk');if(sk){sk.disable
 /* ---------- Components ---------- */
 const trackRow=(id,i,ctx,opts={})=>{const t=T(id),on=P.cur&&P.cur.id===id;
  return `<div class="row ${on?'cur':''}" data-id="${id}"><span class="n">${on&&P.playing?'<div class="eq"><i></i><i></i><i></i></div>':i+1}</span>
- <button class="tt" data-a="playctx" data-ctx="${ctx}" data-i="${i}" aria-label="Play ${esc(t.title)}">${tCover(t)}<span style="min-width:0"><span class="t">${esc(t.title)}</span><span class="a" role="link" data-a="nav" data-h="#/artist/${t.artist}">Directed by ${esc(AR(t.artist).name)} · AI-created</span><span class="a added">Added ${esc(localDateTime(t.addedAt))}</span>${opts.membership?`<span class="membership ${opts.membership==='Temporary'?'temporary':''}">${opts.membership} add</span>`:''}</span></button>
+ <button class="tt" data-a="playctx" data-ctx="${ctx}" data-i="${i}" aria-label="Play ${esc(t.title)}">${tCover(t)}<span style="min-width:0"><span class="t">${esc(t.title)}</span><span class="a" role="link" data-a="nav" data-h="#/artist/${t.artist}">Directed by ${esc(AR(t.artist).name)} · AI-created</span><span class="a added">Added ${esc(localDateTime(t.addedAt))}</span>${opts.membership?`<span class="membership ${opts.membership==='Temporary'?'temporary':opts.membership==='Mood match'?'mood':''}">${opts.membership==='Mood match'?'Mood match':`${opts.membership} add`}</span>`:''}</span></button>
  <a class="al" href="#/album/${t.album}">${esc(AL(t.album).title)}</a>
  <span class="ac"><button class="ib lk ${liked(id)?'on':''}" data-a="like" data-id="${id}" aria-label="Like" aria-pressed="${liked(id)}">${ic('heart')}</button>
- <button class="ib ad" data-a="add" data-id="${id}" aria-label="Add to playlist or queue">${ic('plus')}</button>
+ ${opts.locked?'':`<button class="ib ad" data-a="add" data-id="${id}" aria-label="Add to playlist or queue">${ic('plus')}</button>`}
  ${opts.rm?`<button class="ib" data-a="${opts.pl?'rmpl':'rmq'}" ${opts.pl?`data-pl="${opts.pl}"`:''} data-i="${i}" data-id="${id}" aria-label="${opts.pl?'Remove from playlist':'Remove'}">${ic('x')}</button>`:''}</span><span class="tm">${fmt(t.dur)}</span></div>`};
 const list=(ids,ctx,o)=>ids.map((id,i)=>trackRow(id,i,ctx,o)).join('');
-const playlistTrackRow=(playlist,id,index)=>{const temporary=(S.temporaryAdds[playlist.id]||[]).includes(id);return trackRow(id,index,'pl:'+playlist.id,{rm:temporary,membership:temporary?'Temporary':'Permanent',pl:playlist.id})};
-const PLAYLIST_ARTWORK={p1:'krishna.jpg',p2:'ram.jpg',p3:'hanuman.jpg',p4:'ganesha.jpg',p5:'romantic.jpg',popular:'popular.jpg'};
+const playlistTrackRow=(playlist,id,index)=>{if(isMoodPlaylist(playlist.id))return trackRow(id,index,'pl:'+playlist.id,{locked:true,membership:'Mood match'});const temporary=(S.temporaryAdds[playlist.id]||[]).includes(id);return trackRow(id,index,'pl:'+playlist.id,{rm:temporary,membership:temporary?'Temporary':'Permanent',pl:playlist.id})};
+const PLAYLIST_ARTWORK={p1:'krishna.jpg',p2:'ram.jpg',p3:'hanuman.jpg',p4:'ganesha.jpg',p5:'romantic.jpg',popular:'popular.jpg','mood-love':'mood-romantic.svg','mood-peaceful':'mood-peaceful.svg','mood-energy':'mood-energy.svg','mood-devotional':'mood-devotional.svg','mood-heartfelt':'mood-heartfelt.svg','mood-night':'mood-night.svg','mood-positive':'mood-positive.svg','mood-trending':'mood-trending.svg'};
 const playlistCover=(playlist,variant='')=>{const artwork=PLAYLIST_ARTWORK[playlist.id];return artwork?`<div class="cv playlist-cover ${variant}" aria-hidden="true"><img src="./assets/playlists/${artwork}" alt="" loading="lazy" decoding="async"></div>`:cover(240,playlist.name[0],`playlist-cover ${variant}`)};
 const artistCover=artist=>artist.id===0?'<div class="cv artist-art" aria-hidden="true"><img src="./assets/artists/prajwal-khot-aura.svg" alt="" loading="lazy" decoding="async"></div>':cover(artist.hue,artist.name[0]);
 const BRAND_LOGO='./Photos/TONEARM%20logo.png';
@@ -478,9 +500,9 @@ const mobileBrand=()=>`<a class="mobile-brand" href="#/" aria-label="Tonearm hom
 const brandFooter=()=>`<footer class="brand-footer"><a class="brand-footer-link" href="#/" aria-label="Tonearm home">${brandImage('lazy')}</a><div><strong aria-hidden="true">Tonearm</strong><span>Curated audio · premium sound</span></div></footer>`;
 const albumCard=a=>`<a class="card" href="#/album/${a.id}">${albumCover(a)}<b>${esc(a.title)}</b><span>Directed by ${esc(AR(a.artist).name)} · ${a.tracks.length} songs</span><button class="pb" data-a="playctx" data-ctx="album:${a.id}" data-i="0" aria-label="Play ${esc(a.title)}">${ic('play')}</button></a>`;
 const artistCard=a=>`<a class="card round" href="#/artist/${a.id}">${artistCover(a)}<b>${esc(a.name)}</b><span>Director · AI-created music</span></a>`;
-const playlistType=p=>p.id==='popular'?'Songs folder':isPermanentPlaylist(p.id)||p.storage!=='temporary'?'Permanent playlist':'Temporary · This session';
+const playlistType=p=>p.id==='popular'?'Songs folder':p.id==='mood-trending'?'Auto-updated · Latest additions':isMoodPlaylist(p.id)?'Auto-updated mood mix':isPermanentPlaylist(p.id)||p.storage!=='temporary'?'Permanent playlist':'Temporary · This session';
 const youtubePromo=()=>`<section class="youtube-promo" aria-label="Follow Tonearm's YouTube channel"><div class="youtube-copy"><span class="youtube-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg></span><div><h2>Follow on YouTube</h2><p>Enjoying the music? Visit and subscribe for more tracks and updates.</p><span class="youtube-handle">@pk_lord</span></div></div><a class="youtube-cta" href="https://youtube.com/@pk_lord" target="_blank" rel="noopener noreferrer">Visit YouTube Channel <span aria-hidden="true">↗</span></a></section>`;
-const playlistTracks=p=>[...new Set([...p.tracks,...(S.temporaryAdds[p.id]||[])])].filter(id=>T(id));
+const playlistTracks=p=>isMoodPlaylist(p.id)?[...new Set(p.tracks)].filter(id=>T(id)):[...new Set([...p.tracks,...(S.temporaryAdds[p.id]||[])])].filter(id=>T(id));
 const plCard=p=>{const ids=playlistTracks(p);return `<a class="card" href="#/playlist/${p.id}">${playlistCover(p)}<b>${esc(p.name)}</b><span>${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}</span><button class="pb" data-a="playctx" data-ctx="pl:${p.id}" data-i="0" aria-label="Play ${esc(p.name)}">${ic('play')}</button></a>`};
 const empty=(h,p,btn)=>`<div class="empty"><h3>${h}</h3><p>${p}</p>${btn||''}</div>`;
 const ctxIds=c=>{const[k,v]=c.split(':');return k==='album'?AL(+v).tracks:k==='artist'?TRACKS.filter(t=>t.artist==+v).map(t=>t.id):k==='pl'?playlistTracks(S.playlists.find(p=>p.id===v)||{tracks:[]}):k==='liked'?S.liked:k==='recent'?S.recent:k==='all'?TRACKS.map(t=>t.id):k==='ids'?v.split(',').map(Number):[]};
@@ -513,9 +535,9 @@ const V={
  artist(id){const a=AR(+id);if(!a)return V.nf();const ids=TRACKS.filter(t=>t.artist===a.id).map(t=>t.id);
   return head('rd',artistCover(a),'Director · AI-created music',esc(a.name),`${ids.length} songs · Created using AI technology`,'artist:'+a.id)+`<h2>Popular</h2>${list(ids,'artist:'+a.id)}<h2>Discography</h2><div class="grid">${ALBUMS.filter(x=>x.artist===a.id).map(albumCard).join('')}</div>`},
  playlist(id){const p=S.playlists.find(x=>x.id===id);if(!p)return V.nf();const protectedPlaylist=isPermanentPlaylist(p.id),ids=playlistTracks(p);
-  const actions=p.id==='popular'?'<span class="sub">Synced from Songs/</span>':protectedPlaylist?'<span class="sub">Permanent playlist · Protected</span>':`<button class="ib" data-a="renpl" data-id="${p.id}" aria-label="Rename playlist">Rename</button><button class="ib" data-a="delpl" data-id="${p.id}" aria-label="Delete playlist">Delete</button>`;
+  const actions=p.id==='popular'?'<span class="sub">From Songs/ · refreshed on deployment</span>':isMoodPlaylist(p.id)?'<span class="sub">Auto-curated from the song manifest</span>':protectedPlaylist?'<span class="sub">Permanent playlist · Protected</span>':`<button class="ib" data-a="renpl" data-id="${p.id}" aria-label="Rename playlist">Rename</button><button class="ib" data-a="delpl" data-id="${p.id}" aria-label="Delete playlist">Delete</button>`;
   return head('',playlistCover(p),'Playlist',esc(p.name),`${ids.length} songs · Added ${esc(localDateTime(p.createdAt))} · ${esc(playlistType(p))}`,'pl:'+p.id,actions)+
-  (ids.length?ids.map((tid,i)=>playlistTrackRow(p,tid,i)).join(''):empty('This playlist is empty','Use the + button on any song to add it here.','<a class="btn" href="#/search">Find songs</a>'))},
+  (ids.length?ids.map((tid,i)=>playlistTrackRow(p,tid,i)).join(''):empty(isMoodPlaylist(p.id)?'No songs match this mood yet':'This playlist is empty',isMoodPlaylist(p.id)?'Add matching tracks to Songs/ and regenerate the manifest.':'Use the + button on any song to add it here.','<a class="btn" href="#/search">Find songs</a>'))},
  queue(){const n=S.queue.length;if(!n)return `<h1>Queue</h1>`+empty('Your queue is empty','Play a song or use + on a song to add it to the queue.','<a class="btn" href="#/">Browse music</a>');
   return `<h1>Queue</h1><h2>Now playing</h2>${trackRow(S.queue[S.qi],S.qi,'q')}<h2>Next up</h2>${S.queue.slice(S.qi+1).length?S.queue.slice(S.qi+1).map((id,k)=>trackRow(id,S.qi+1+k,'q',{rm:1})).join(''):'<p class="sub">Nothing after this song.</p>'}`},
  nf(){return empty('Page not found','That page doesn’t exist or was removed.','<a class="btn" href="#/">Go home</a>')}};
@@ -540,7 +562,7 @@ addEventListener('hashchange',()=>route());
 const dlg=$('#dlg');
 const openDlg=h=>{dlg.innerHTML=h;if(!dlg.open)dlg.showModal()};
 function addMenu(id){const t=T(id);openDlg(`<h3>Add “${esc(t.title)}”</h3><button class="it" data-a="enq" data-id="${id}">${ic('queue')} Add to queue</button>
- ${S.playlists.filter(p=>p.id!=='popular').map(p=>`<button class="it" data-a="topl" data-pl="${p.id}" data-id="${id}">${playlistCover(p,'option')}<span>${esc(p.name)} ${playlistTracks(p).includes(id)?`<span class="sub">(${(S.temporaryAdds[p.id]||[]).includes(id)?'temporary':'permanent'})</span>`:''}</span></button>`).join('')}
+ ${S.playlists.filter(p=>p.id!=='popular'&&!isMoodPlaylist(p.id)).map(p=>`<button class="it" data-a="topl" data-pl="${p.id}" data-id="${id}">${playlistCover(p,'option')}<span>${esc(p.name)} ${playlistTracks(p).includes(id)?`<span class="sub">(${(S.temporaryAdds[p.id]||[]).includes(id)?'temporary':'permanent'})</span>`:''}</span></button>`).join('')}
  <button class="it" data-a="newpl" data-id="${id}">${ic('plus')} New playlist…</button>`)}
 function addSongOptions(playlist,id){const t=T(id);if(!t)return toast('This song is no longer available');const permanent=playlist.tracks.includes(id),temporary=(S.temporaryAdds[playlist.id]||[]).includes(id),status=permanent?'Already added permanently':temporary?'Already added temporarily':'',permanentNote=playlist.storage==='temporary'?'Saves the song and keeps this playlist on this device permanently.':'Saved with this playlist after refresh and restart.';
  openDlg(`<h3>Add to ${esc(playlist.name)}</h3><p class="sub">${esc(t.title)}${status?` · ${status}`:''}</p>
