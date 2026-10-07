@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonearm · Playback check</title>
+<style>
+:root{color-scheme:dark;font:15px/1.5 system-ui,sans-serif;background:#0b0d11;color:#f0f3f4}body{max-width:900px;margin:32px auto;padding:0 18px}h1{font-size:28px;margin:0 0 6px}p{color:#a1aab1}.tools{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:20px 0}.button{background:#78d4bb;color:#0b1512;border:0;border-radius:7px;padding:10px 16px;font-weight:700;cursor:pointer}.button:disabled{opacity:.5;cursor:wait}progress{width:min(100%,380px);accent-color:#78d4bb}#summary{font-variant-numeric:tabular-nums}.songs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}.song{padding:9px 11px;background:#12161d;border:1px solid #242c34;border-radius:7px;min-width:0}.song b,.song span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.song span{font-size:12px;color:#9ba6ae}.song[data-state="pass"]{border-color:#78d4bb55}.song[data-state="fail"]{border-color:#ff718355}.song[data-state="running"]{border-color:#e5bd6655}button:focus-visible{outline:2px solid #78d4bb;outline-offset:3px}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<h1>Tonearm playback check</h1>
+<p>Run a short browser audio check against the generated catalog. Each track is loaded, sought, played briefly, paused, and volume-tested. Keep the tab open until the report completes.</p>
+<div class="tools"><button id="run" class="button">Run checks for all songs</button><progress id="progress" max="1" value="0"></progress><span id="summary" role="status" aria-live="polite">Waiting to run</span></div>
+<div id="songs" class="songs"></div>
+<script src="../songs-manifest.js"></script>
+<script>
+const songs=Array.isArray(window.TONEARM_SONGS)?window.TONEARM_SONGS:[];
+const list=document.querySelector('#songs'),progress=document.querySelector('#progress'),summary=document.querySelector('#summary'),run=document.querySelector('#run');
+const rows=new Map();
+for(const song of songs){const row=document.createElement('div');row.className='song';row.dataset.state='pending';row.innerHTML=`<b></b><span></span>`;row.firstElementChild.textContent=song.title||song.file;row.lastElementChild.textContent=song.file;list.append(row);rows.set(song.id,row)}
+function waitFor(audio,success,failure=['error'],timeout=15000){return new Promise((resolve,reject)=>{let timer;const cleanup=()=>{clearTimeout(timer);audio.removeEventListener(success,done);for(const type of failure)audio.removeEventListener(type,fail)};const done=()=>{cleanup();resolve()};const fail=()=>{cleanup();reject(new Error(audio.error?.message||'Audio could not load'))};audio.addEventListener(success,done,{once:true});for(const type of failure)audio.addEventListener(type,fail,{once:true});timer=setTimeout(()=>{cleanup();reject(new Error(`Timed out waiting for ${success}`))},timeout)})}
+async function load(audio,song){const ready=waitFor(audio,'loadedmetadata');audio.src=`../Songs/${encodeURIComponent(song.file)}`;audio.load();await ready;if(!Number.isFinite(audio.duration)||audio.duration<=0)throw new Error('Browser reported no valid duration')}
+run.addEventListener('click',async()=>{if(!songs.length){summary.textContent='No songs found in the manifest.';return}run.disabled=true;progress.max=songs.length;progress.value=0;let passed=0,failed=0;const audio=new Audio();audio.preload='metadata';audio.volume=.12;
+ for(let index=0;index<songs.length;index++){const song=songs[index],row=rows.get(song.id);row.dataset.state='running';summary.textContent=`Checking ${index+1} of ${songs.length}: ${song.title}`;try{await load(audio,song);const target=Math.min(Math.max(.1,audio.duration*.12),audio.duration-.1);if(target>0){const seeked=waitFor(audio,'seeked',['error'],8000);audio.currentTime=target;await seeked;if(Math.abs(audio.currentTime-target)>2)throw new Error('Seek did not reach the requested position')}audio.volume=.12;if(Math.abs(audio.volume-.12)>.01)throw new Error('Volume control did not apply');await audio.play();await new Promise(resolve=>setTimeout(resolve,160));if(audio.paused)throw new Error('Playback did not start');audio.pause();if(!audio.paused)throw new Error('Playback did not pause');row.dataset.state='pass';row.lastElementChild.textContent=`${song.file} · ${Math.round(audio.duration)} sec · pass`;passed++}catch(error){audio.pause();row.dataset.state='fail';row.lastElementChild.textContent=`${song.file} · fail: ${error.message}`;failed++}progress.value=index+1}
+ audio.removeAttribute('src');audio.load();summary.textContent=`Finished · ${passed} passed · ${failed} failed`;run.disabled=false});
+</script>
+</body>
+</html>
