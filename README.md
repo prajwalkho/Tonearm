@@ -16,7 +16,7 @@ Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, `ass
 node scripts/generate-song-manifest.mjs
 ```
 
-The manifest generator scans the folder, creates stable IDs from filenames, reads MP3 ID3 and M4A metadata where available, and records duration from the audio frames/container. Filename titles and the project credits are used when embedded metadata is unavailable. Duplicate embedded titles are disambiguated with their filenames. A static browser cannot watch the server's folder after page load, so a new deployment uses the latest committed manifest. Refreshing or redeploying after a folder change will show the updated catalog.
+The manifest generator scans the folder, creates stable IDs from filenames, reads embedded titles and album metadata where available, credits tracks to Prajwal Khot, and records duration from the audio frames/container. Filename titles and the Tonearm album are used when embedded metadata is unavailable. Duplicate embedded titles are disambiguated with their filenames. A static browser cannot watch the server's folder after page load, so a new deployment uses the latest committed manifest. Refreshing or redeploying after a folder change will show the updated catalog.
 
 Run `node scripts/verify-catalog.mjs` before deployment to check that the manifest matches `Songs/`, every file exists, and each entry has a title, artist, album, and duration. For a browser playback smoke test, serve the project root locally and open `scripts/playback-check.html`; it loads each manifest track, seeks, briefly plays and pauses it, and verifies volume control. This check exercises the browser's audio support for the files but does not replace checking the Tonearm controls manually in target browsers.
 

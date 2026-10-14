@@ -192,7 +192,9 @@ async function audioMetadata(filename) {
   const duration = extension === '.mp3' ? mp3Duration(buffer) : extension === '.m4a' ? tags.durationSeconds : extension === '.wav' ? readWavDuration(buffer) : null;
   return {
     title: tags.title || titleFromFilename(filename),
-    artist: tags.artist || DEFAULT_ARTIST,
+    // Embedded artist tags in this catalog include third-party generator IDs.
+    // Tonearm credits all project tracks to its stated director instead.
+    artist: DEFAULT_ARTIST,
     album: tags.album || DEFAULT_ALBUM,
     durationSeconds: Number.isFinite(duration) && duration > 0 ? Math.round(duration) : null,
   };
