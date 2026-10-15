@@ -129,7 +129,7 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .eq{display:flex;gap:3px;align-items:flex-end;height:16px}.eq i{width:3px;background:var(--ac);height:100%;animation:eq .8s infinite ease-in-out;transform-origin:bottom}
 .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
 @keyframes eq{50%{transform:scaleY(.3)}}
-.row{display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.2fr) auto 44px;gap:12px;align-items:center;padding:6px 10px;border-radius:10px;transition:.15s}
+.row{display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.2fr) auto 44px;gap:12px;align-items:center;padding:6px 10px;border-radius:10px;transition:.15s;cursor:pointer}
 .row:hover{background:var(--s2)}.row.cur .t{color:var(--ac)}
 .row .n{color:var(--mu);text-align:center;font-size:14px}
 .row .track-main{display:flex;gap:12px;align-items:center;min-width:0}
@@ -493,7 +493,7 @@ audio.addEventListener('loadedmetadata',()=>{const sk=$('#sk');if(sk){sk.disable
 
 /* ---------- Components ---------- */
 const trackRow=(id,i,ctx,opts={})=>{const t=T(id),on=P.cur&&P.cur.id===id;
- return `<div class="row ${on?'cur':''}" data-id="${id}"><span class="n">${on&&P.playing?'<div class="eq"><i></i><i></i><i></i></div>':i+1}</span>
+ return `<div class="row ${on?'cur':''}" data-id="${id}" data-play-ctx="${esc(ctx)}" data-play-i="${i}"><span class="n">${on&&P.playing?'<div class="eq"><i></i><i></i><i></i></div>':i+1}</span>
  <div class="track-main">${tCover(t)}<div class="track-copy" style="min-width:0"><button class="track-play" data-a="playctx" data-ctx="${ctx}" data-i="${i}" aria-label="Play ${esc(t.title)}"><span class="t">${esc(t.title)}</span></button><span class="a track-artist">${t.metadataArtist.toLocaleLowerCase()!=='prajwal khot'?`Artist: ${esc(t.metadataArtist)} · `:''}<a href="#/artist/${t.artist}">Directed by ${esc(AR(t.artist).name)}</a> · AI-created</span><span class="a added">Added ${esc(localDateTime(t.addedAt))}</span>${opts.membership?`<span class="membership ${opts.membership==='Temporary'?'temporary':opts.membership==='Mood match'?'mood':''}">${opts.membership==='Mood match'?'Mood match':`${opts.membership} add`}</span>`:''}</div></div>
  <a class="al" href="#/album/${t.album}">${esc(AL(t.album).title)}</a>
  <span class="ac"><button class="ib lk ${liked(id)?'on':''}" data-a="like" data-id="${id}" aria-label="Like" aria-pressed="${liked(id)}">${ic('heart')}</button>
@@ -626,9 +626,14 @@ const A={
  delok:e=>{if(isPermanentPlaylist(e.id))return toast('Permanent playlists cannot be deleted');S.playlists=S.playlists.filter(x=>x.id!==e.id);delete S.temporaryAdds[e.id];persist();dlg.close();toast('Playlist deleted');location.hash='#/library'},
  rmpl:e=>{const p=S.playlists.find(x=>x.id===e.pl),id=+e.id;if(!p)return;if(!(S.temporaryAdds[p.id]||[]).includes(id))return toast('Permanent playlist songs are protected');S.temporaryAdds[p.id]=S.temporaryAdds[p.id].filter(trackId=>trackId!==id);if(!S.temporaryAdds[p.id].length)delete S.temporaryAdds[p.id];persist();route(true)},
  rmq:e=>{const i=+e.i;S.queue.splice(i,1);if(i<S.qi)S.qi--;route(true)}};
-document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(!b)return;ev.preventDefault();ev.stopPropagation();
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(b){ev.preventDefault();ev.stopPropagation();
  try{A[b.dataset.a](b.dataset)}catch(e){console.error(e);toast('Something went wrong. Try again.')}
- if(['playctx','shufctx'].includes(b.dataset.a))route(true)},true);
+ if(['playctx','shufctx'].includes(b.dataset.a))route(true);return}
+ const row=ev.target.closest('.row[data-play-ctx]');
+ if(!row||ev.target.closest('a,button,input,select,textarea,[contenteditable="true"]'))return;
+ ev.preventDefault();
+ try{A.playctx({ctx:row.dataset.playCtx,i:row.dataset.playI});route(true)}catch(e){console.error(e);toast('Unable to play this song.')}
+},true);
 addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|TEXTAREA|BUTTON|A/.test(e.target.tagName)){e.preventDefault();P.toggle()}});
 const _s=P.start.bind(P);P.start=function(){const pending=_s();route(true);return pending};
 document.addEventListener('error',ev=>{const image=ev.target;if(!(image instanceof HTMLImageElement)||!image.closest('.playlist-cover'))return;image.remove();image.parentElement.classList.add('art-fallback')},true);
