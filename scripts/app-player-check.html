@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tonearm · App player check</title>
+<style>
+:root{color-scheme:dark;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b0d11;color:#f0f3f4;--panel:#151a20;--line:#29313a;--muted:#a1abb4;--accent:#78d4bb}*{box-sizing:border-box}body{margin:0;padding:24px;max-width:1500px;margin-inline:auto}h1{font-size:25px;margin:0}p{color:var(--muted);max-width:950px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}.toolbar button{min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:7px;background:#202830;color:inherit;font:inherit;cursor:pointer}.toolbar button.primary{background:var(--accent);color:#0b1512;font-weight:700}.toolbar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:7px;color:var(--muted)}.status:before{content:"";width:8px;height:8px;border-radius:50%;background:#77818a}.status[data-active="true"]:before{background:var(--accent)}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}.app-shell,.report-shell{background:var(--panel);border:1px solid #ffffff12;border-radius:10px;overflow:hidden}.app-shell iframe{display:block;width:100%;height:min(78vh,900px);min-height:620px;border:0;background:#0b0d11}.report-shell{max-height:min(78vh,900px);display:flex;flex-direction:column}.report-head{padding:14px;border-bottom:1px solid var(--line)}.report-head b{font-size:15px}.report-head span{display:block;color:var(--muted);font-size:12px;margin-top:3px}.events{overflow:auto;padding:8px}.event{padding:9px 10px;border-bottom:1px solid #ffffff0b}.event:last-child{border:0}.event strong{display:flex;justify-content:space-between;gap:10px;font-size:12px}.event p{font-size:12px;margin:3px 0 0;overflow-wrap:anywhere}.event[data-result="pass"] strong{color:var(--accent)}.event[data-result="fail"] strong{color:#ff8894}.event[data-result="info"] strong{color:#e8c27b}.empty{padding:18px 10px;color:var(--muted);font-size:13px}.note{font-size:12px}.note code{color:#d5e9e4}@media(max-width:900px){body{padding:16px}.workspace{grid-template-columns:1fr}.app-shell iframe{height:70vh;min-height:520px}.report-shell{max-height:380px}}@media(max-width:520px){body{padding:10px}.app-shell iframe{height:68vh;min-height:500px}.toolbar button{flex:1}.status{width:100%}}
+</style>
+</head>
+<body>
+<h1>Tonearm app player check</h1>
+<p>This page observes the <strong>actual Tonearm player</strong> in the embedded app. Start recording, then use the app below as a listener would. It checks selected-song/UI agreement, playback state, seek, volume, Next/Previous, Shuffle/Repeat state, and reports browser errors. Browser autoplay rules still apply, so begin playback with a direct click in the embedded app.</p>
+<div class="toolbar"><button id="record" class="primary">Start recording</button><button id="stop">Stop recording</button><button id="clear">Clear report</button><button id="export">Export report</button><span id="state" class="status" data-active="false" role="status" aria-live="polite">Waiting for app</span></div>
+<p class="note">Serve the project root over HTTP, then open <code>/scripts/app-player-check.html</code>. The embedded app must be same-origin with this page. Interact with real songs and controls. A row selection or control is counted only after the resulting app/audio state is observed. This tool does not claim to certify all browsers or replace the per-file audio check.</p>
+<div class="workspace">
+  <section class="app-shell" aria-label="Tonearm music player"><iframe id="tonearm" title="Tonearm app under test" src="../index.html#/playlist/popular"></iframe></section>
+  <section class="report-shell" aria-label="Playback check results"><div class="report-head"><b id="summary">No interactions recorded</b><span>Each entry includes the observed track and outcome.</span></div><div id="events" class="events"><div class="empty">Start recording, then select a song or operate a player control.</div></div></section>
+</div>
+<script src="./app-player-check.js"></script>
+</body>
+</html>

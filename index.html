@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="A dark, responsive music player for songs directed by Prajwal Khot using AI technology.">
 <meta name="theme-color" content="#0b0d11">
-<title>Tonearm – Music Player</title>
+<meta name="google-site-verification" content="xDKO2tZvCVKyTsMQ-JSOjo90Sbiqyqr7x0LG1O6esJQ" />
+<title>Tonearm Music Player | Online Music & Devotional Songs</title>
+<meta name="description" content="Explore Tonearm, a music player for your favorite songs, moods, and devotional music. Enjoy a personalized listening experience.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://tonearm.vercel.app/">
+
+<meta property="og:title" content="Tonearm Music Player">
+<meta property="og:description" content="Discover your music, your moods, your Tonearm.">
+<meta property="og:url" content="https://tonearm.vercel.app/">
+<meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="./Photos/TONEARM%20logo.png">
 <style>
 :root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0c0e13;--s1:#141822;--s2:#1d2230;--s3:#283042;--tx:#eef0f6;--mu:#8b93a8;--ac:#9b8cff;--like:#ff6b8b;--r:14px;font-family:'Bricolage Grotesque',system-ui,sans-serif}
@@ -130,7 +139,7 @@ h2{font-size:22px;letter-spacing:-.02em;margin:34px 0 14px}
 .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}
 @keyframes eq{50%{transform:scaleY(.3)}}
 .row{display:grid;grid-template-columns:36px minmax(0,2fr) minmax(0,1.2fr) auto 44px;gap:12px;align-items:center;padding:6px 10px;border-radius:10px;transition:.15s;cursor:pointer}
-.row:hover{background:var(--s2)}.row.cur .t{color:var(--ac)}
+.row:hover{background:var(--s2)}.row:focus-visible{outline:2px solid var(--ac);outline-offset:2px}.row.cur .t{color:var(--ac)}
 .row .n{color:var(--mu);text-align:center;font-size:14px}
 .row .track-main{display:flex;gap:12px;align-items:center;min-width:0}
 .row .track-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;width:100%}
@@ -493,7 +502,7 @@ audio.addEventListener('loadedmetadata',()=>{const sk=$('#sk');if(sk){sk.disable
 
 /* ---------- Components ---------- */
 const trackRow=(id,i,ctx,opts={})=>{const t=T(id),on=P.cur&&P.cur.id===id;
- return `<div class="row ${on?'cur':''}" data-id="${id}" data-play-ctx="${esc(ctx)}" data-play-i="${i}"><span class="n">${on&&P.playing?'<div class="eq"><i></i><i></i><i></i></div>':i+1}</span>
+ return `<div class="row ${on?'cur':''}" role="group" tabindex="0" aria-label="${esc(t.title)} by ${esc(AR(t.artist).name)}. Press Enter or Space to play." data-id="${id}" data-play-ctx="${esc(ctx)}" data-play-i="${i}"><span class="n">${on&&P.playing?'<div class="eq"><i></i><i></i><i></i></div>':i+1}</span>
  <div class="track-main">${tCover(t)}<div class="track-copy" style="min-width:0"><button class="track-play" data-a="playctx" data-ctx="${ctx}" data-i="${i}" aria-label="Play ${esc(t.title)}"><span class="t">${esc(t.title)}</span></button><span class="a track-artist">${t.metadataArtist.toLocaleLowerCase()!=='prajwal khot'?`Artist: ${esc(t.metadataArtist)} · `:''}<a href="#/artist/${t.artist}">Directed by ${esc(AR(t.artist).name)}</a> · AI-created</span><span class="a added">Added ${esc(localDateTime(t.addedAt))}</span>${opts.membership?`<span class="membership ${opts.membership==='Temporary'?'temporary':opts.membership==='Mood match'?'mood':''}">${opts.membership==='Mood match'?'Mood match':`${opts.membership} add`}</span>`:''}</div></div>
  <a class="al" href="#/album/${t.album}">${esc(AL(t.album).title)}</a>
  <span class="ac"><button class="ib lk ${liked(id)?'on':''}" data-a="like" data-id="${id}" aria-label="Like" aria-pressed="${liked(id)}">${ic('heart')}</button>
@@ -634,6 +643,7 @@ document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(
  ev.preventDefault();
  try{A.playctx({ctx:row.dataset.playCtx,i:row.dataset.playI});route(true)}catch(e){console.error(e);toast('Unable to play this song.')}
 },true);
+document.addEventListener('keydown',ev=>{const row=ev.target.closest?.('.row[data-play-ctx]');if(!row||ev.target!==row||!['Enter',' '].includes(ev.key))return;ev.preventDefault();ev.stopPropagation();try{A.playctx({ctx:row.dataset.playCtx,i:row.dataset.playI});route(true)}catch(e){console.error(e);toast('Unable to play this song.')}},true);
 addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|TEXTAREA|BUTTON|A/.test(e.target.tagName)){e.preventDefault();P.toggle()}});
 const _s=P.start.bind(P);P.start=function(){const pending=_s();route(true);return pending};
 document.addEventListener('error',ev=>{const image=ev.target;if(!(image instanceof HTMLImageElement)||!image.closest('.playlist-cover'))return;image.remove();image.parentElement.classList.add('art-fallback')},true);

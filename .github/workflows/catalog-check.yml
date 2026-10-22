@@ -1,0 +1,23 @@
+name: Catalog and asset check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-static-library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify song manifest and static artwork paths
+        run: node scripts/verify-catalog.mjs
+      - name: Check app player audit script syntax
+        run: node --check scripts/app-player-check.js

@@ -1,41 +1,73 @@
-# Tonearm – Music Player
+# Tonearm Music Player
 
-A responsive static music player for songs directed by Prajwal Khot using AI technology.
+Tonearm is a responsive, static music library and player for tracks directed by Prajwal Khot using AI technology. It runs in the browser and does not require an application server, account, database, framework, or third-party music API.
 
-## Deploy
+## Start here
 
-The project is ready to publish from its repository root. The Vercel configuration disables build and install commands and serves `.` as the output directory. Netlify and GitHub Pages can also publish the root directory as a static site.
+- [System study](SYSTEM_STUDY.md) explains what the checked-out project currently does and what could not be verified.
+- [System design](SYSTEM_DESIGN.md) shows the static architecture, data flow, storage boundaries, and deployment model.
+- [Software Requirements Specification](SRS.md) proposes testable requirements for the next improvement phase. All new requirements are proposals pending review.
+- [UI/UX specification](UI_UX_SPECIFICATION.md) maps the current navigation and describes a restrained responsive design direction.
+- [Improvement backlog](IMPROVEMENT_BACKLOG.md) prioritizes work and traces each item to requirements and acceptance criteria.
+- [Improvement roadmap](IMPROVEMENT_ROADMAP.md) groups work into review, verification, reliability, UX, and release phases.
+- [Future improvements](FUTURE_IMPROVEMENTS.md) separates implemented upgrades from proposed next steps and release evidence.
+- [Traceability matrix](TRACEABILITY_MATRIX.md) links requirements to source evidence, backlog items, tests, and evidence status.
+- [Test plan](TEST_PLAN.md) provides manual, automated, accessibility, and regression checks.
+- [Changelog](CHANGELOG.md) records the documentation study.
 
-Include `index.html`, `songs-manifest.js`, the complete `Songs/` directory, `assets/playlists/`, `assets/artists/`, `Photos/TONEARM logo.png`, and `Tonearm – Music Player.html` (kept as a redirect for existing links). All song and artwork URLs are relative to the site root; no local machine paths or runtime API are used.
+## Run locally
 
-## Updating songs
+Open `index.html` directly, or serve the repository root using any static file server. Serving over `http://localhost` is recommended when checking browser storage and media behavior, since storage rules for `file://` URLs vary by browser.
 
-`Songs/` is the source of truth for Popular. When adding or removing supported audio files, regenerate and commit the manifest before deploying:
+## Project contents
+
+| Path | Purpose |
+| --- | --- |
+| `index.html` | Single-page application, markup, styles, route rendering, player, and playlist behavior |
+| `songs-manifest.js` | Generated browser catalog loaded by `index.html` |
+| `Songs/` | Source audio files; checked-out project contains 68 files (65 MP3, 3 M4A) |
+| `Photos/` | Tonearm logo and supplied playlist artwork |
+| `assets/` | Artist artwork and vector/legacy playlist artwork |
+| `scripts/song-catalog.mjs` | Scans supported audio files and derives metadata and durations |
+| `scripts/generate-song-manifest.mjs` | Regenerates the static song manifest |
+| `scripts/verify-catalog.mjs` | Checks the generated manifest against the source audio folder |
+| `.github/workflows/catalog-check.yml` | Runs catalog, exact-case active artwork/logo, app-check assets, and audit-script syntax checks on pushes and pull requests |
+| `scripts/playback-check.html` | Browser audio smoke check for all manifest tracks |
+| `scripts/app-player-check.html` and `scripts/app-player-check.js` | Same-origin interactive recorder for the actual app's player controls and visible state |
+| `Tonearm – Music Player.html` | Redirect for an earlier entry point |
+| `vercel.json` | Static deployment configuration for publishing the repository root |
+
+There is no `package.json` or installed application dependency in the repository. The catalog scripts use Node.js built-ins and do not need a package install.
+
+Song rows can be focused with the keyboard; Enter or Space starts the focused row. The catalog check also verifies exact-case paths for active playlist art, the brand logo, director art, and favicon. GitHub Actions runs this release check automatically. It does not verify browser playback or the deployed site; see [FUTURE_IMPROVEMENTS.md](FUTURE_IMPROVEMENTS.md) and [TEST_PLAN.md](TEST_PLAN.md).
+
+## Update the catalog
+
+`Songs/` is the source of truth for Popular. A static browser cannot watch the deployed server's folder after page load. After adding or removing audio files, regenerate and commit the manifest, then deploy the updated repository:
 
 ```sh
 node scripts/generate-song-manifest.mjs
+node scripts/verify-catalog.mjs
 ```
 
-The manifest generator scans the folder, creates stable IDs from filenames, reads embedded titles and album metadata where available, credits tracks to Prajwal Khot, and records duration from the audio frames/container. Filename titles and the Tonearm album are used when embedded metadata is unavailable. Duplicate embedded titles are disambiguated with their filenames. A static browser cannot watch the server's folder after page load, so a new deployment uses the latest committed manifest. Refreshing or redeploying after a folder change will show the updated catalog.
+The generator creates stable numeric IDs from filenames; reads embedded title/album values where supported; credits tracks to Prajwal Khot; derives titles from filenames when needed; records durations for MP3, M4A, and WAV; and preserves existing `addedAt` timestamps for songs already cataloged. Renaming a file creates a new ID. The browser filters saved song references against the current manifest on launch.
 
-Run `node scripts/verify-catalog.mjs` before deployment to check that the manifest matches `Songs/`, every file exists, and each entry has a title, artist, album, and duration. For a browser playback smoke test, serve the project root locally and open `scripts/playback-check.html`; it loads each manifest track, seeks, briefly plays and pauses it, and verifies volume control. This check exercises the browser's audio support for the files but does not replace checking the Tonearm controls manually in target browsers.
+## Player and playlists
 
-Song `addedAt` values are recorded the first time a filename appears in the generated manifest and preserved on later regenerations. User playlist creation times are saved with the playlist; built-in playlist dates are saved locally when the app first initializes. Dates are displayed in each viewer's local format and time zone. Existing songs and playlists without historical dates receive a one-time catalog/migration timestamp because their original add time is not available.
+The player uses the browser's `HTMLAudioElement`. It supports Play/Pause, Next/Previous, seek, volume/mute, shuffle, repeat, queue, liked songs, and recently played. The current player implementation and exact edge cases should be exercised using the test plan; the included audio smoke page is not a substitute for an end-to-end app test.
 
-Supported extensions: MP3, M4A, AAC, OGG/OGA, WAV, Opus, and FLAC, subject to browser codec support. The site includes built-in cover artwork and credits tracks to Prajwal Khot.
+The application includes five protected curated playlists (Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, Ganesha, Romantic), Popular, eight generated mood mixes, and user-created playlists. Permanent user playlists are saved in browser `localStorage` for the current origin and can be exported/imported as JSON. Temporary playlists use `sessionStorage`; temporary song additions are in-memory and disappear on refresh. These browser storage mechanisms do not synchronize between devices or browser profiles.
 
-## Playlists
+## Verify playback
 
-Popular is generated from the song manifest. Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, Ganesha, and Romantic keep their curated starter selections and protected names. Hanuman and Ganesha devotional tracks and clearly romantic titles are seeded into their matching permanent playlists; other new songs appear in Popular and can be added to any playlist. Keep the filename lists in `CURATED_PLAYLISTS` aligned with the theme selections in `index.html` when expanding those curated mixes. Playlist additions and user-created playlist contents are stored as song IDs, not copied song records. On each launch, the app filters playlist, liked-song, and recent-play references against the current manifest. Removing a song from `Songs/`, regenerating the manifest, and redeploying therefore clears that song from every playlist without deleting the playlists. Playlist names, artwork, and permanent protections remain independent of song changes.
+For a browser-level file check, serve the repository root and open `scripts/playback-check.html`. Start **Run checks for all songs**. The page tries to load, seek, briefly play/pause, and set volume for every manifest entry. It checks the browser's audio support for each file, but does not drive the application's own controls, playlist flows, or visual state. Use [TEST_PLAN.md](TEST_PLAN.md) for the full proposed release test.
 
-New user playlists can be permanent or temporary. Permanent playlists are saved in the browser's local storage for that device and site address, including through refreshes, browser restarts, and redeployments at the same address. Use **Export playlists** in the Library to move a JSON backup to another browser or device, then **Import playlists** there. Import filters unavailable song IDs and skips duplicate playlists. Temporary playlists are held in session storage and disappear when their browser tab/session ends. Both types remain editable while available.
+For app-level manual verification, serve the repository root and open `scripts/app-player-check.html`. Start recording, then interact with the embedded Tonearm app: select songs and use Play/Pause, Seek, Next/Previous, Volume, Shuffle, and Repeat. The recorder checks observed browser audio/player state and can export a JSON report. The page needs same-origin HTTP access; opening it through `file://` may prevent the parent from inspecting the embedded app. It is an interactive verification aid, not unattended browser automation and not a substitute for cross-browser/deployed-site testing.
 
-The built-in mood mixes (Romantic & Love, Peaceful & Relaxing, Energetic & Powerful, Devotional & Spiritual, Emotional & Heartfelt, Calm & Late Night, Happy & Positive, and Trending & Popular) are permanent, read-only generated playlists. They reference the current catalog by song ID and are recalculated from filenames, titles, and curated devotional/romantic seeds on every page load. Update the `MOOD_PLAYLISTS` rules in `index.html` when new naming patterns need categorization; regenerate `songs-manifest.js` after changing `Songs/`. Trending & Popular shows the 12 most recently added catalog tracks, while Popular continues to contain the complete Songs/ catalog. Each mood playlist has a fixed artwork asset in `assets/playlists/`.
+## Deploy
 
-Each song added to a playlist can independently be added permanently or temporarily. Permanent additions are stored with the playlist; temporary additions remain in memory only and disappear on refresh. A permanent addition to a temporary playlist promotes that playlist to permanent so the saved song has a playlist to remain in. Playlist rows label each song's membership type.
+The current `vercel.json` sets no build step and publishes `.`. Deploy from the repository root and include `index.html`, `songs-manifest.js`, all of `Songs/`, `Photos/`, and `assets/`. The live Vercel site could not be inspected by the available web reader during this study, so the deployed result remains unverified here.
 
-Permanent playlists use fixed square artwork from `Photos/` (including the supplied devotional, romantic, popular, and mood covers). Artwork is independent of song membership and stays consistent across cards, headers, and navigation. The original supplied filenames are kept intact and URL-encoded when referenced.
+## Project credits
 
-## Local preview
-
-Open `index.html` directly, or serve the repository root with any static file server. No framework, external package, or backend is required.
+The player promotes `https://youtube.com/@pk_lord`. The project describes its catalog as music directed by Prajwal Khot and created using AI technology.
