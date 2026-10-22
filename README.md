@@ -2,6 +2,14 @@
 
 Tonearm is a responsive, static music library and player for tracks directed by Prajwal Khot using AI technology. It runs in the browser and does not require an application server, account, database, framework, or third-party music API.
 
+# Tonearm Music Player
+
+Welcome to Tonearm, your personal music listening experience. Explore your favorite songs, organize playlists, and discover music to match your mood. From relaxing and romantic tracks to devotional music, Tonearm brings your listening experience together in one place.
+
+Open Tonearm and find the music that fits your moment.
+
+https://tonearm.vercel.app/
+
 ## Start here
 
 - [System study](SYSTEM_STUDY.md) explains what the checked-out project currently does and what could not be verified.
