@@ -124,7 +124,7 @@ This approach is appropriate while the app has no server-managed identity or cro
 | Manifest and file tree diverge | Static build-time generation | Make catalog verification a deployment gate (FR-003 / BL-01). |
 | User assumes local playlists are cloud-backed | Browser storage only | Show origin/profile scope; retain JSON export/import (FR-013/019). |
 | Audio event races during rapid selection | Shared media element, promise request counter | Add application-level race/failure tests and guard only verified stale events (FR-008/009). |
-| Large media payload | 68 audio files and multi-megabyte PNG artwork | Measure real transfer first; optimize only approved assets after baseline (NFR-001). |
+| Large media payload | 78 audio files and multi-megabyte PNG artwork | Measure real transfer first; optimize only approved assets after baseline (NFR-001). |
 | One-file coupling | Most app code in `index.html` | Stabilize tests, then extract boundaries incrementally (NFR-008). |
 | Mood classification errors | Regex-driven terms | Add reviewed tags/override policy before expanding automation (FR-016). |
 

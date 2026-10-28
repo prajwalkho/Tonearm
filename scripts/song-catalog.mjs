@@ -9,6 +9,19 @@ export const SUPPORTED_AUDIO = new Set(['.mp3', '.m4a', '.aac', '.ogg', '.oga', 
 const DEFAULT_ARTIST = 'Prajwal Khot';
 const DEFAULT_ALBUM = 'Tonearm';
 
+// Clean titles for files with obvious download-site noise or unhelpful
+// filesystem-export names. The audio filenames and stable IDs remain intact.
+const SONG_METADATA_OVERRIDES = new Map([
+  ['bhaktambar.m4a', { title: 'Bhaktambar' }],
+  ['Hanuman aura.mp3', { title: 'Hanuman Aura' }],
+  ['Hanuman chalisa.mp3', { title: 'Hanuman Chalisa' }],
+  ['Knowledge of Krishna.mp3', { title: 'Knowledge of Krishna' }],
+  ['Lakshya (From Lakshya).mp3', { title: 'Lakshya' }],
+  ['Shiv Tandav Stotram - Shankar Mahadevan- [PagalWorld.NL] (1).mp3', { title: 'Shiv Tandav Stotram', album: DEFAULT_ALBUM }],
+  ['Unstoppable - (Raag.Fm).mp3', { title: 'Unstoppable', album: DEFAULT_ALBUM }],
+  ['Ziddi Dil - Ranjit Rana.mp3', { title: 'Ziddi Dil', album: DEFAULT_ALBUM }],
+]);
+
 export function titleFromFilename(filename) {
   return filename.replace(/\.[^.]+$/, '').replace(/([A-Za-z])Version(?=\s*\d)/g, '$1 Version').replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
@@ -191,11 +204,11 @@ async function audioMetadata(filename) {
   const tags = extension === '.mp3' ? readId3(buffer) : extension === '.m4a' ? m4aMetadata(buffer) : {};
   const duration = extension === '.mp3' ? mp3Duration(buffer) : extension === '.m4a' ? tags.durationSeconds : extension === '.wav' ? readWavDuration(buffer) : null;
   return {
-    title: tags.title || titleFromFilename(filename),
+    title: SONG_METADATA_OVERRIDES.get(filename)?.title || tags.title || titleFromFilename(filename),
     // Embedded artist tags in this catalog include third-party generator IDs.
     // Tonearm credits all project tracks to its stated director instead.
     artist: DEFAULT_ARTIST,
-    album: tags.album || DEFAULT_ALBUM,
+    album: SONG_METADATA_OVERRIDES.get(filename)?.album || tags.album || DEFAULT_ALBUM,
     durationSeconds: Number.isFinite(duration) && duration > 0 ? Math.round(duration) : null,
   };
 }

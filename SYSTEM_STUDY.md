@@ -52,7 +52,7 @@ There is no authentication or server-defined role system. “Curator” and “m
 | --- | --- |
 | `index.html` | Contains the page shell, CSS, route/view functions, catalog loading, storage logic, player, and event handlers. The page uses browser-native JavaScript and HTML; no framework is referenced. |
 | `songs-manifest.js` | Loaded as a classic script before the main inline script. It assigns `window.TONEARM_SONGS`. |
-| `Songs/` | Contains 68 audio files in this checkout: 65 `.mp3` and 3 `.m4a`. The reported folder size is approximately 224,480,177 bytes (about 214 MiB). |
+| `Songs/` | Current checkout contains 78 audio files: 74 `.mp3` and 4 `.m4a` (331,969,689 bytes, about 317 MiB). The original 15 October study observed 68 files; 10 later files have since been added and cataloged. |
 | `Photos/` | Contains the Tonearm logo and supplied square-themed covers for the devotional, romantic, popular, and mood playlists. Several PNG covers are roughly 1.8–2.7 MB each. |
 | `assets/` | Contains an SVG artist portrait, mood SVGs, and older JPG playlist art. The current mapping in `index.html` chooses the `Photos/` art for most playlists and an SVG for Trending & Popular. |
 | `scripts/song-catalog.mjs` | Node.js built-in modules scan supported audio files, read MP3/M4A metadata, derive title and duration, and assign stable IDs. Artist credit is normalized to Prajwal Khot in the generated catalog. |
@@ -153,7 +153,8 @@ Severity is a planning estimate: **P0 critical**, **P1 high**, **P2 medium**, **
 
 ### Checks executed during this documentation pass
 
-- `node scripts/verify-catalog.mjs` passed on 15 October 2026: 68 entries, unique IDs, metadata/durations present, and all referenced audio files present.
+- `node scripts/verify-catalog.mjs` passed on 28 October 2026: 78 entries, unique IDs, metadata/durations present, and all referenced audio files present. All 13 active playlist artwork files and the brand/artist/favicon paths also pass exact-case checks.
+- `node scripts/generate-song-manifest.mjs` was run on 28 October 2026 to add 10 files that were present in `Songs/` but absent from the prior manifest; existing IDs and `addedAt` dates were preserved.
 - The supplied live website URL was retried with the web inspection tool and remained inaccessible. No claim is made about current production visuals, console, network, or playback.
 - No application interaction, accessibility audit, performance measurement, or cross-browser test was run in this pass.
 

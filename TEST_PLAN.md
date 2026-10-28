@@ -23,7 +23,7 @@ This plan is a proposed release checklist. The live deployment and full browser 
 
 ## 3. Environment and test data
 
-- **Catalog baseline:** checkout manifest and all files under `Songs/` (currently 68 audio files: 65 MP3 and 3 M4A; re-count at test time).
+- **Catalog baseline:** checkout manifest and all files under `Songs/` (currently 78 audio files: 74 MP3 and 4 M4A; re-count at test time).
 - **Browsers proposed:** current stable Chrome/Edge, Firefox, macOS Safari, iOS Safari; exact version numbers recorded per run.
 - **Viewports proposed:** 360×800, 390×844, 768×1024, 1024×768, 1440×900; desktop zoom 100% and 200%.
 - **Storage states:** fresh profile, existing profile, blocked storage/quota simulation, session tab refresh/close, second profile/origin.
@@ -70,7 +70,7 @@ Precondition labels in the execution register refer to these group definitions. 
 | AUD-09 | Rapidly choose A then B while A is loading. | B remains selected/playing; A’s late promise/event cannot overwrite B’s UI. |
 | AUD-10 | Play a missing/unsupported fixture or block its request. | Non-blocking actionable error appears; controls recover; another song can play. |
 | AUD-11 | Let a track reach its end under each repeat setting. | Auto-advance/repeat behavior matches approved rule; current time resets appropriately. |
-| AUD-12 | In the primary supported browser, repeat the app-level sequence for each catalog track: select it from a full-catalog queue with shuffle off and repeat-all on; Play → Pause → Play → seek → Next → Previous → change Volume; verify visible current title/cover/active row after each switch. Record the track filename and result. Separately run `scripts/playback-check.html` for browser decode coverage. | All 68 songs individually pass the actual UI sequence, all player/UI state stays synchronized, and every file passes browser load/seek/play/pause/volume smoke; failures are listed by filename. |
+| AUD-12 | In the primary supported browser, repeat the app-level sequence for each catalog track: select it from a full-catalog queue with shuffle off and repeat-all on; Play → Pause → Play → seek → Next → Previous → change Volume; verify visible current title/cover/active row after each switch. Record the track filename and result. Separately run `scripts/playback-check.html` for browser decode coverage. | Every song currently in the manifest individually passes the actual UI sequence, all player/UI state stays synchronized, and every file passes browser load/seek/play/pause/volume smoke; failures are listed by filename. |
 | AUD-13 | Serve the root and open `scripts/app-player-check.html`; start recording and use the embedded app to select songs, play/pause, seek, change volume, use Next/Previous, toggle shuffle/repeat, and exercise a keyboard-focused row. Export the report. | Report records the actual selected track and observed audio/UI result for each exercised interaction; errors and unhandled rejections are included. Actions not exercised remain untested; this recorder does not certify unattended or cross-browser coverage. |
 
 **Important distinction:** the included `scripts/playback-check.html` tests a separate `Audio` object. It does not prove the Tonearm Play/Pause, Next/Previous, queue, UI, or error logic works. Record those as separate integration results.
@@ -121,7 +121,7 @@ Precondition labels in the execution register refer to these group definitions. 
 ## 5. Regression checklist
 
 - [ ] Home, search, library, artist, album, playlist, queue, liked, recent routes.
-- [ ] All 68 files remain present and appear once; all media paths resolve.
+- [ ] Every current manifest file appears once; all media paths resolve.
 - [ ] Popular contains exactly the manifest tracks.
 - [ ] Krishna Kanhaiya, Jai Sri Ram, Jai Hanuman, Ganesha, Romantic preserved and protected.
 - [ ] Eight mood mixes have correct fixed artwork and generated membership.

@@ -2,6 +2,23 @@
 
 Changes are documented newest first.
 
+## 2026-10-28 — Cleaned song display titles
+
+- Added maintainable filename-specific metadata overrides for imported files whose tags or filenames contained download-site noise, redundant movie labels, or inconsistent capitalization.
+- Corrected display titles including **Bhaktambar**, **Hanuman Aura**, **Hanuman Chalisa**, **Lakshya**, **Shiv Tandav Stotram**, **Unstoppable**, and **Ziddi Dil**; corrected matching album labels where their embedded values were download-site names.
+- Added Knowledge of Krishna and Hanuman Aura to their matching permanent devotional playlists; both are also included in Devotional & Spiritual.
+- Kept audio filenames and stable IDs unchanged. Added verifier assertions for the corrected titles.
+- Regenerated the manifest and verified all 78 current files. Playback behavior was not tested in a browser.
+
+## 2026-10-28 — Added the remaining Songs folder tracks
+
+- Regenerated `songs-manifest.js` from the current `Songs/` folder and added 10 previously unlisted files; Popular now contains all 78 available audio files.
+- Added Hanuman Chalisa to the protected Jai Hanuman playlist and devotional mood mix.
+- Added Shiv Tandav Stotram and Bhaktambar to Devotional & Spiritual; added Aashayein, Kar Har Maidaan Fateh, Lakshya, Unstoppable, and Ziddi Dil to Energetic & Powerful and Happy & Positive.
+- Preserved existing track IDs and addition timestamps; the manifest generator derived stable IDs, filename-based titles where tags were unavailable, and durations.
+- The two files named with Android storage paths remain available in Popular; their actual titles cannot be inferred reliably from the filenames.
+- Catalog and exact-case artwork/brand checks pass for 78 files. Browser playback was not run in this change.
+
 ## 2026-10-15 — Reliability and accessibility improvement
 
 - Made song rows keyboard focusable and playable with Enter or Space, with a visible focus indicator. Existing nested buttons and links retain their separate actions.

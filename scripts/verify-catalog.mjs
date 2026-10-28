@@ -10,6 +10,16 @@ const manifest = JSON.parse(manifestJson);
 const diskSongs = await scanSongs();
 const byFile = new Map(manifest.map(song => [song.file.normalize('NFC').toLocaleLowerCase('en-US'), song]));
 const byId = new Set();
+const expectedTitles = new Map([
+  ['bhaktambar.m4a', 'Bhaktambar'],
+  ['Hanuman aura.mp3', 'Hanuman Aura'],
+  ['Hanuman chalisa.mp3', 'Hanuman Chalisa'],
+  ['Knowledge of Krishna.mp3', 'Knowledge of Krishna'],
+  ['Lakshya (From Lakshya).mp3', 'Lakshya'],
+  ['Shiv Tandav Stotram - Shankar Mahadevan- [PagalWorld.NL] (1).mp3', 'Shiv Tandav Stotram'],
+  ['Unstoppable - (Raag.Fm).mp3', 'Unstoppable'],
+  ['Ziddi Dil - Ranjit Rana.mp3', 'Ziddi Dil'],
+]);
 
 assert.equal(byFile.size, manifest.length, 'manifest filenames must be unique');
 for (const song of diskSongs) {
@@ -22,6 +32,8 @@ for (const song of diskSongs) {
   assert.equal(saved.title, song.title, `stale title for ${song.file}`);
   assert.equal(saved.artist, song.artist, `stale artist for ${song.file}`);
   assert.equal(saved.album, song.album, `stale album for ${song.file}`);
+  const expectedTitle = expectedTitles.get(song.file);
+  if (expectedTitle) assert.equal(saved.title, expectedTitle, `unexpected display title for ${song.file}`);
   const durationKnownByGenerator = ['.mp3', '.m4a', '.wav'].includes(song.file.slice(song.file.lastIndexOf('.')).toLocaleLowerCase('en-US'));
   if (durationKnownByGenerator) assert.ok(Number.isFinite(saved.durationSeconds) && saved.durationSeconds > 0, `missing duration for ${song.file}`);
   await access(join(SONGS_DIR, song.file));
