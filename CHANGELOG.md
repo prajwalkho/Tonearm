@@ -2,6 +2,25 @@
 
 Changes are documented newest first.
 
+## 2026-10-28 — Added the remaining Songs folder tracks
+
+- Regenerated the manifest with 18 previously unlisted audio files, bringing the library to 96 songs with stable IDs, deployment-safe encoded paths, and recorded durations.
+- Cleaned the new tracks' display titles while preserving their original filenames and audio assets.
+- Added matching devotional tracks to the existing Krishna Kanhaiya, Jai Sri Ram, and Jai Hanuman permanent playlists and expanded mood matching for new mythological rap tracks.
+- Added catalog title assertions for the new metadata overrides.
+
+## 2026-10-28 — Refined discovery and player presentation
+
+- Refined the dark interface with clearer hierarchy, calmer surfaces, more consistent spacing, and restrained teal interactions while retaining Tonearm's existing identity.
+- Added mood-led discovery on Home and Search, including quick-search chips and richer matching across track metadata and mood terms.
+- Improved responsive player controls, song-row states, and focus/hover feedback while preserving existing playback and playlist actions.
+- Added reduced-motion support for the updated transitions.
+
+## 2026-10-28 — Added a library refresh control
+
+- Added a clearly labeled **Refresh library** button to desktop navigation and a matching accessible refresh icon beside the Tonearm logo on mobile.
+- The control reloads the current static site build so the page reads the latest deployed song manifest; it does not claim to monitor the local filesystem.
+
 ## 2026-10-28 — Cleaned song display titles
 
 - Added maintainable filename-specific metadata overrides for imported files whose tags or filenames contained download-site noise, redundant movie labels, or inconsistent capitalization.

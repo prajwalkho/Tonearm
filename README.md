@@ -33,7 +33,7 @@ Open `index.html` directly, or serve the repository root using any static file s
 | --- | --- |
 | `index.html` | Single-page application, markup, styles, route rendering, player, and playlist behavior |
 | `songs-manifest.js` | Generated browser catalog loaded by `index.html` |
-| `Songs/` | Source audio files; current checkout contains 78 files (74 MP3, 4 M4A) |
+| `Songs/` | Source audio files; current checkout contains 96 supported audio files |
 | `Photos/` | Tonearm logo and supplied playlist artwork |
 | `assets/` | Artist artwork and vector/legacy playlist artwork |
 | `scripts/song-catalog.mjs` | Scans supported audio files and derives metadata and durations |
@@ -58,9 +58,11 @@ node scripts/generate-song-manifest.mjs
 node scripts/verify-catalog.mjs
 ```
 
+Use **Refresh library** in the desktop sidebar or the refresh icon beside the Tonearm logo on mobile to reload the current site build and song manifest. This reloads deployed catalog changes; it does not scan or watch the local `Songs/` folder.
+
 The generator creates stable numeric IDs from filenames; reads embedded title/album values where supported; credits tracks to Prajwal Khot; derives titles from filenames when needed; records durations for MP3, M4A, and WAV; and preserves existing `addedAt` timestamps for songs already cataloged. Renaming a file creates a new ID. The browser filters saved song references against the current manifest on launch.
 
-After catalog refresh, Popular and Trending & Popular include every supported file in `Songs/`. Recognized devotional tracks are included in the relevant curated/mood playlists, and motivational tracks are included in Energetic & Powerful and Happy & Positive. Titles with download-site suffixes are cleaned using filename-specific metadata overrides while audio filenames and stable IDs remain unchanged.
+After catalog refresh, Popular includes every supported file in `Songs/`; Trending & Popular is a 12-song recent mix. Recognized devotional tracks are included in the relevant curated/mood playlists, and motivational tracks are included in Energetic & Powerful and Happy & Positive. Titles with download-site suffixes are cleaned using filename-specific metadata overrides while audio filenames and stable IDs remain unchanged.
 
 ## Player and playlists
 
