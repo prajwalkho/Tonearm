@@ -2,6 +2,13 @@
 
 Changes are documented newest first.
 
+## 2026-10-29 — Added the latest Songs folder tracks
+
+- Regenerated the manifest with the 17 newly added source files, bringing the catalog to 111 unique tracks.
+- Added a content-hash check so two byte-identical audio copies remain in `Songs/` but appear only once in Popular and the library.
+- Cleaned the new mythological/rap track titles and added Krishna and Hanuman tracks to their matching permanent playlists; expanded devotional, energetic, heartfelt, and positive mood matching.
+- Added expected-title checks for the new catalog metadata.
+
 ## 2026-10-28 — Added the remaining Songs folder tracks
 
 - Regenerated the manifest with 18 previously unlisted audio files, bringing the library to 96 songs with stable IDs, deployment-safe encoded paths, and recorded durations.

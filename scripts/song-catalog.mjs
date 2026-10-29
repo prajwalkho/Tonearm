@@ -38,6 +38,22 @@ const SONG_METADATA_OVERRIDES = new Map([
   ['Wahi Karn hu Mai (Official Lyrical Video) ｜｜ Ravan ｜ Red Sky Records.m4a', { title: 'Wahi Karn Hu Mai' }],
   ['अगर रावण अपनी कहानी खुद सुनाता... ｜ मैं वो रावण हूँ.. ｜ Ravan\'s Story Like Never Before ｜ Ram Song.m4a', { title: 'Main Wo Ravan Hoon' }],
   ['तुम राम बन जाओ, मैं रावण ही ठीक हूँ 🔥 ｜ Ravan Rap ｜ Ramayan Song ｜ Hindi Mythology Song.m4a', { title: 'तुम राम बन जाओ, मैं रावण ही ठीक हूँ' }],
+  ['Angad Lalkaar (अंगद ललकार ) ｜ Narci ｜ Abhilipsa Panda ｜ Myaan Kashyap I Hindi Rap (Prod. By Narci).m4a', { title: 'Angad Lalkaar' }],
+  ['Arjun - Raanjha ｜｜ Shoorveer Arjun Rap Song ｜｜ Mahabharat Rap Song ｜｜ 2024.m4a', { title: 'Shoorveer Arjun' }],
+  ['Bhagavān ｜ Mahabharat Rap Song - Siddharth ｜ Krishna\'s Role in Mahabharat ｜ Hindi Rap Song ｜ भगवान.m4a', { title: 'Bhagavān' }],
+  ['Chakravyuh- The Legend of Abhimanyu ｜ Narci ｜ Hindi Rap Song.m4a', { title: 'Chakravyuh' }],
+  ['DHARM ADHARM - LUCKE ｜ Krishna X Karn Rap Song ｜ Shoorveer Karn ｜  @HareParmatmane.m4a', { title: 'Dharm Adharm' }],
+  ['Dharm Adharm ｜ Karn x Shree Krishna Hindi Rap Song ｜ LUCKE.m4a', { title: 'Dharm Adharm (Short Version)' }],
+  ['Kali Vs Kalki - Epic Rap Battle ｜ Hindi Rap.mp3', { title: 'Kali Vs Kalki' }],
+  ['Kaliyug Vs Hanuman - Vayuu (Epic Rap Battle) ｜ Hanuman Powerful Energy ｜ Hindi Rap.m4a', { title: 'Kaliyug Vs Hanuman' }],
+  ['Kalyug Ka Danav ｜ Hindi Rap Song ｜ DK ｜ Ft. Aevi Ajay.m4a', { title: 'Kalyug Ka Danav' }],
+  ['Karn Ki Gatha Rap ｜ सूयपुत्र कर्ण का महायुद्ध Anthem ⚡ High Energy Epic Mahabharat Rap 2025.m4a', { title: 'Karn Ki Gatha' }],
+  ['Krishnvani(Official Lyrical Video) ｜｜ Ravan ｜｜ Red Sky Records.m4a', { title: 'Krishnvani' }],
+  ['Main Ravan Hun ｜ Rap Song ｜ Karan Chopra.m4a', { title: 'Main Ravan Hun' }],
+  ['Paramavatar ｜ Goosebumps Guaranteed🔥 ｜ Hindi Rap Song ｜ LUCKE ｜ AI Video.m4a', { title: 'Paramavatar' }],
+  ['Parmeshwar- Raanjha ｜｜ Krishna Arjun Rap Song ｜｜ Mahabharat Rap Song ｜｜ Geeta Gyan ｜｜ 2025.m4a', { title: 'Parmeshwar' }],
+  ['Sooryaputra Karn - Raanjha ｜｜ Daanveer Karn Rap Song ｜｜ Mahabharat Rap Song ｜｜ 2025 ｜｜ 2026.m4a', { title: 'Sooryaputra Karn' }],
+  ['पाँच गाँव — कृष्ण का अंतिम संकल्प ｜ Mahabharat Cinematic Rap ｜ श्री कृष्ण × दुर्योधन.m4a', { title: 'पाँच गाँव' }],
 ]);
 
 export function titleFromFilename(filename) {
@@ -222,6 +238,7 @@ async function audioMetadata(filename) {
   const tags = extension === '.mp3' ? readId3(buffer) : extension === '.m4a' ? m4aMetadata(buffer) : {};
   const duration = extension === '.mp3' ? mp3Duration(buffer) : extension === '.m4a' ? tags.durationSeconds : extension === '.wav' ? readWavDuration(buffer) : null;
   return {
+    contentHash: createHash('sha256').update(buffer).digest('hex'),
     title: SONG_METADATA_OVERRIDES.get(filename)?.title || tags.title || titleFromFilename(filename),
     // Embedded artist tags in this catalog include third-party generator IDs.
     // Tonearm credits all project tracks to its stated director instead.
@@ -243,10 +260,18 @@ export async function scanSongs() {
   const files = entries
     .filter(entry => entry.isFile() && SUPPORTED_AUDIO.has(entry.name.slice(entry.name.lastIndexOf('.')).toLocaleLowerCase('en-US')))
     .map(entry => entry.name)
-    .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+    .sort((a, b) => {
+      const canonicalName = filename => filename.replace(/\s+\(\d+\)(?=\.[^.]+$)/, '');
+      const byCanonicalName = canonicalName(a).localeCompare(canonicalName(b), 'en', { sensitivity: 'base' });
+      if (byCanonicalName) return byCanonicalName;
+      const aIsCopy = /\s+\(\d+\)(?=\.[^.]+$)/.test(a);
+      const bIsCopy = /\s+\(\d+\)(?=\.[^.]+$)/.test(b);
+      return Number(aIsCopy) - Number(bIsCopy) || a.localeCompare(b, 'en', { sensitivity: 'base' });
+    });
 
   const seenNames = new Set();
   const seenIds = new Map();
+  const seenAudio = new Set();
   const songs = [];
   for (const filename of files) {
     const key = filename.normalize('NFC').toLocaleLowerCase('en-US');
@@ -255,8 +280,12 @@ export async function scanSongs() {
     const id = stableSongId(filename);
     const collision = seenIds.get(id);
     if (collision) throw new Error(`Song ID collision between "${collision}" and "${filename}".`);
+    const metadata = await audioMetadata(filename);
+    if (seenAudio.has(metadata.contentHash)) continue;
+    seenAudio.add(metadata.contentHash);
     seenIds.set(id, filename);
-    songs.push({ id, file: filename, ...(await audioMetadata(filename)) });
+    const { contentHash, ...songMetadata } = metadata;
+    songs.push({ id, file: filename, ...songMetadata });
   }
   const titleFrequency = new Map();
   for (const song of songs) {

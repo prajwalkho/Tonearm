@@ -33,7 +33,7 @@ Open `index.html` directly, or serve the repository root using any static file s
 | --- | --- |
 | `index.html` | Single-page application, markup, styles, route rendering, player, and playlist behavior |
 | `songs-manifest.js` | Generated browser catalog loaded by `index.html` |
-| `Songs/` | Source audio files; current checkout contains 96 supported audio files |
+| `Songs/` | Source audio files; current checkout contains 113 files representing 111 unique tracks (exact duplicate files are omitted from the library) |
 | `Photos/` | Tonearm logo and supplied playlist artwork |
 | `assets/` | Artist artwork and vector/legacy playlist artwork |
 | `scripts/song-catalog.mjs` | Scans supported audio files and derives metadata and durations |
